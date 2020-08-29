@@ -6,7 +6,13 @@ import android.nfc.NfcAdapter
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import de.eucalypto.timetracker.database.WorkStatus
+import de.eucalypto.timetracker.database.WorkStatusDatabase
 import de.eucalypto.timetracker.databinding.ActivityMainBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -41,7 +47,31 @@ class MainActivity : AppCompatActivity() {
 
         val payload = message.records.first().payload
 
-        binding.text.text = String(payload)
+        val status = String(payload)
+
+        binding.text.text = "Starting status: " + status
+
+        // Save status in database
+
+        val workStatus = WorkStatus()
+        workStatus.status = status.toInt()
+
+        val dataSource = WorkStatusDatabase.getInstance(application).workStatusDatabaseDao
+
+
+        val job = Job()
+        val uiScope = CoroutineScope(Dispatchers.Main + job)
+        uiScope.launch {
+            dataSource.insert(workStatus)
+        }
+
+        val entries = dataSource.getAllWorkStatuses()
+
+        val printString = StringBuilder()
+        for (entry in entries) {
+            printString.append(entry)
+        }
+        binding.text.text = printString.toString()
 
     }
 

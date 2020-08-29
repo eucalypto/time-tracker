@@ -16,5 +16,5 @@ data class WorkStatus(
     @ColumnInfo(name = "end_time_milli")
     var endTimeMilli: Long = startTimeMilli,
 
-    val status: Int = -1
+    var status: Int = -1
 )
