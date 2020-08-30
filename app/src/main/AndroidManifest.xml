@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.NFC" />
 
     <application
+        android:name=".TimeTrackerApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,6 +22,7 @@
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
+                <!-- This MIME Type must also be used to write the NFC Tag! -->
                 <data android:mimeType="text/time-tracker" />
             </intent-filter>
 
