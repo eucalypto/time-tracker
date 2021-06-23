@@ -15,13 +15,13 @@ abstract class WorkStatusDatabase
         @Volatile
         private var INSTANCE: WorkStatusDatabase? = null
 
-        fun getInstance(context: Context): WorkStatusDatabase {
+        fun getInstance(applicationContext: Context): WorkStatusDatabase {
             synchronized(this) {
                 var instance = INSTANCE
 
                 if (instance == null) {
                     instance = Room.databaseBuilder(
-                        context,
+                        applicationContext,
                         WorkStatusDatabase::class.java,
                         "work_status_database"
                     )
