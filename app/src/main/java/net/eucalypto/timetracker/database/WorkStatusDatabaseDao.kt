@@ -1,4 +1,4 @@
-package de.eucalypto.timetracker.database
+package net.eucalypto.timetracker.database
 
 import androidx.room.Dao
 import androidx.room.Insert

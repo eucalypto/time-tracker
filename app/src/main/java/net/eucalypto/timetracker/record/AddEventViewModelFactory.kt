@@ -1,8 +1,8 @@
-package de.eucalypto.timetracker.record
+package net.eucalypto.timetracker.record
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import de.eucalypto.timetracker.database.WorkStatusDatabaseDao
+import net.eucalypto.timetracker.database.WorkStatusDatabaseDao
 
 class AddEventViewModelFactory(
     private val dataSource: WorkStatusDatabaseDao

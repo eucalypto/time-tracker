@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="de.eucalypto.timetracker.record.AddEventViewModel" />
+            type="net.eucalypto.timetracker.record.AddEventViewModel" />
     </data>
 
     <LinearLayout

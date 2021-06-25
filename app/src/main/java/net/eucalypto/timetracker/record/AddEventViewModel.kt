@@ -1,4 +1,4 @@
-package de.eucalypto.timetracker.record
+package net.eucalypto.timetracker.record
 
 import android.content.Intent
 import android.nfc.NdefMessage
@@ -6,9 +6,9 @@ import android.nfc.NfcAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import de.eucalypto.timetracker.database.WorkStatus
-import de.eucalypto.timetracker.database.WorkStatusDatabaseDao
 import kotlinx.coroutines.*
+import net.eucalypto.timetracker.database.WorkStatus
+import net.eucalypto.timetracker.database.WorkStatusDatabaseDao
 import timber.log.Timber
 
 class AddEventViewModel(

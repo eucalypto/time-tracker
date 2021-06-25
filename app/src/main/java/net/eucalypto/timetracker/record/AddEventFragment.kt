@@ -1,4 +1,4 @@
-package de.eucalypto.timetracker.record
+package net.eucalypto.timetracker.record
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import de.eucalypto.timetracker.database.WorkStatusDatabase
-import de.eucalypto.timetracker.databinding.FragmentAddEventBinding
+import net.eucalypto.timetracker.database.WorkStatusDatabase
+import net.eucalypto.timetracker.databinding.FragmentAddEventBinding
 
 class AddEventFragment : Fragment() {
 
