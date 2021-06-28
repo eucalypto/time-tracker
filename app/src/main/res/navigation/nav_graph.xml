@@ -2,10 +2,18 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/nav_add_event">
+    app:startDestination="@id/addEventFragment">
 
     <fragment
-        android:id="@+id/nav_add_event"
+        android:id="@+id/addEventFragment"
         android:name="net.eucalypto.timetracker.record.AddEventFragment"
-        android:label="AddEventFragment" />
+        android:label="AddEventFragment">
+        <action
+            android:id="@+id/action_to_writeNfcActivity"
+            app:destination="@id/writeNfcActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/writeNfcActivity"
+        android:name="net.eucalypto.timetracker.writenfc.WriteNfcActivity"
+        android:label="WriteNfcActivity" />
 </navigation>

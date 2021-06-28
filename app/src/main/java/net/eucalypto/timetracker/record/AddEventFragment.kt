@@ -1,6 +1,5 @@
 package net.eucalypto.timetracker.record
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +7,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import net.eucalypto.timetracker.database.WorkStatusDatabase
 import net.eucalypto.timetracker.databinding.AddEventFragmentBinding
-import net.eucalypto.timetracker.writenfc.WriteNfcActivity
 
 class AddEventFragment : Fragment() {
 
@@ -37,8 +36,8 @@ class AddEventFragment : Fragment() {
         val binding = DataBindingUtil.getBinding<AddEventFragmentBinding>(view)!!
 
         binding.button2.setOnClickListener {
-            val intent = Intent(requireContext(), WriteNfcActivity::class.java)
-            startActivity(intent)
+            val action = AddEventFragmentDirections.actionToWriteNfcActivity()
+            findNavController().navigate(action)
         }
 
         viewModel.onIntentReceived(requireActivity().intent)
