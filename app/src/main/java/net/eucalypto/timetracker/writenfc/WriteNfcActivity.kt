@@ -16,27 +16,30 @@ class WriteNfcActivity : AppCompatActivity() {
 
     private lateinit var adapter: NfcAdapter
 
-
-    val fooIntent = Intent(this, this::class.java).apply {
-        addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-    }
-    var pendingIntent = PendingIntent.getActivity(this, 0, fooIntent, 0)
-    val ndefIntentFilter = IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED).apply {
-        try {
-            addDataType("*/*")
-        } catch (e: IntentFilter.MalformedMimeTypeException) {
-            throw RuntimeException("fail", e)
-        }
-    }
-    val intentFiltersArray = arrayOf(ndefIntentFilter)
-    val techListArray = arrayOf(arrayOf<String>(NfcA::class.java.name))
-
+    private lateinit var pendingIntent: PendingIntent
+    private lateinit var intentFiltersArray: Array<IntentFilter>
+    private lateinit var techListArray: Array<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val binding = WriteNfcActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val fooIntent = Intent(this, this::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        }
+        pendingIntent = PendingIntent.getActivity(this, 0, fooIntent, 0)
+
+        val ndefIntentFilter = IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED).apply {
+            try {
+                addDataType("*/*")
+            } catch (e: IntentFilter.MalformedMimeTypeException) {
+                throw RuntimeException("fail", e)
+            }
+        }
+        intentFiltersArray = arrayOf(ndefIntentFilter)
+        techListArray = arrayOf(arrayOf(NfcA::class.java.name))
 
 
         adapter = NfcAdapter.getDefaultAdapter(this)
