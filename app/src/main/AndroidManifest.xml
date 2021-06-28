@@ -25,12 +25,16 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".writenfc.WriteNfcActivity">
+
+        </activity>
+
         <activity android:name="net.eucalypto.timetracker.nfc.NfcActivity">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <!-- This MIME Type must also be used to write the NFC Tag! -->
-                <data android:mimeType="text/time-tracker" />
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
 

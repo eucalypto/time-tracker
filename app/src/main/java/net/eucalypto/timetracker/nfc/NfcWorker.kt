@@ -14,8 +14,10 @@ class NfcWorker(appContext: Context, params: WorkerParameters) :
     override suspend fun doWork(): Result {
         Timber.d("Marco!")
 
+        val message = inputData.getString(TEXT_KEY)
+
         withContext(Dispatchers.Main) {
-            Toast.makeText(applicationContext, "Polo!", Toast.LENGTH_LONG)
+            Toast.makeText(applicationContext, "Polo! Message: $message", Toast.LENGTH_LONG)
                 .show()
         }
 
@@ -24,5 +26,6 @@ class NfcWorker(appContext: Context, params: WorkerParameters) :
 
     companion object {
         const val WORK_NAME = "net.eucalypto.timetracker.NfcWorker"
+        const val TEXT_KEY = "text_key"
     }
 }
