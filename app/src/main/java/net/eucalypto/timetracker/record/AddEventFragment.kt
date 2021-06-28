@@ -1,5 +1,6 @@
 package net.eucalypto.timetracker.record
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import net.eucalypto.timetracker.database.WorkStatusDatabase
-import net.eucalypto.timetracker.databinding.FragmentAddEventBinding
+import net.eucalypto.timetracker.databinding.AddEventFragmentBinding
+import net.eucalypto.timetracker.writenfc.WriteNfcActivity
 
 class AddEventFragment : Fragment() {
 
@@ -22,7 +24,7 @@ class AddEventFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentAddEventBinding.inflate(inflater, container, false)
+        val binding = AddEventFragmentBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
         return binding.root
@@ -32,7 +34,12 @@ class AddEventFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = DataBindingUtil.getBinding<FragmentAddEventBinding>(view)!!
+        val binding = DataBindingUtil.getBinding<AddEventFragmentBinding>(view)!!
+
+        binding.button2.setOnClickListener {
+            val intent = Intent(requireContext(), WriteNfcActivity::class.java)
+            startActivity(intent)
+        }
 
         viewModel.onIntentReceived(requireActivity().intent)
     }
