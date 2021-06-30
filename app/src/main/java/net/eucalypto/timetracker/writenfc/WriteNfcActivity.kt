@@ -11,6 +11,7 @@ import android.nfc.tech.NfcA
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.navArgs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,6 +22,8 @@ import java.io.IOException
 class WriteNfcActivity : AppCompatActivity() {
 
     private lateinit var adapter: NfcAdapter
+
+    val args: WriteNfcActivityArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +37,7 @@ class WriteNfcActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
-        val record = NdefRecord.createMime("text/plain", "IT is me, your future self".toByteArray())
+        val record = NdefRecord.createMime("text/plain", args.nfcCode.toByteArray())
         val androidApplicationRecord =
             NdefRecord.createApplicationRecord(this.packageName)
         val message = NdefMessage(record, androidApplicationRecord)

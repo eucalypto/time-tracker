@@ -36,7 +36,9 @@ class AddEventFragment : Fragment() {
         val binding = DataBindingUtil.getBinding<AddEventFragmentBinding>(view)!!
 
         binding.button2.setOnClickListener {
-            val action = AddEventFragmentDirections.actionToWriteNfcActivity()
+            val action = AddEventFragmentDirections.actionToWriteNfcActivity(
+                "Can I inject the NFC Tag message from outside the Activity?"
+            )
             findNavController().navigate(action)
         }
 

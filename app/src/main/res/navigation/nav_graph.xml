@@ -15,5 +15,9 @@
     <activity
         android:id="@+id/writeNfcActivity"
         android:name="net.eucalypto.timetracker.writenfc.WriteNfcActivity"
-        android:label="WriteNfcActivity" />
+        android:label="WriteNfcActivity">
+        <argument
+            android:name="nfcCode"
+            app:argType="string" />
+    </activity>
 </navigation>
