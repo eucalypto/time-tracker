@@ -25,11 +25,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".writenfc.WriteNfcActivity">
+        <activity android:name=".nfc.write.WriteNfcActivity">
 
         </activity>
 
-        <activity android:name="net.eucalypto.timetracker.nfc.NfcActivity">
+        <activity android:name="net.eucalypto.timetracker.nfc.read.ReadNfcActivity">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />

@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.writenfc
+package net.eucalypto.timetracker.nfc.write
 
 import android.app.PendingIntent
 import android.content.Intent
@@ -23,7 +23,7 @@ class WriteNfcActivity : AppCompatActivity() {
 
     private lateinit var adapter: NfcAdapter
 
-    val args: WriteNfcActivityArgs by navArgs()
+    private val args: WriteNfcActivityArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,22 +32,24 @@ class WriteNfcActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         adapter = NfcAdapter.getDefaultAdapter(this)
+
+        binding.backButton.setOnClickListener {
+            finish()
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
-        val record = NdefRecord.createMime("text/plain", args.nfcCode.toByteArray())
-        val androidApplicationRecord =
-            NdefRecord.createApplicationRecord(this.packageName)
-        val message = NdefMessage(record, androidApplicationRecord)
+
+        val message = createNdefMessage()
 
 
         val tagFromIntent: Tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)!!
-        val tag = TagHandler(tagFromIntent)
+        val tagHandler = TagHandler(tagFromIntent)
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                tag.writeMessage(message)
+                tagHandler.writeMessage(message)
                 Toast
                     .makeText(this@WriteNfcActivity, "Tag written successfully", Toast.LENGTH_LONG)
                     .show()
@@ -59,9 +61,19 @@ class WriteNfcActivity : AppCompatActivity() {
 
     }
 
+    private fun createNdefMessage(): NdefMessage {
+        val record = NdefRecord.createMime("text/plain", args.nfcMessage.toByteArray())
+        val androidApplicationRecord =
+            NdefRecord.createApplicationRecord(this.packageName)
+        return NdefMessage(record, androidApplicationRecord)
+    }
+
     override fun onResume() {
         super.onResume()
+        enableNfcIntentInterception()
+    }
 
+    private fun enableNfcIntentInterception() {
         val fooIntent = Intent(this, this::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         }
@@ -72,7 +84,6 @@ class WriteNfcActivity : AppCompatActivity() {
         }
         val intentFiltersArray = arrayOf(ndefIntentFilter)
         val techListArray = arrayOf(arrayOf(NfcA::class.java.name))
-
 
         adapter.enableForegroundDispatch(
             this,

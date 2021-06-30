@@ -14,10 +14,10 @@
     </fragment>
     <activity
         android:id="@+id/writeNfcActivity"
-        android:name="net.eucalypto.timetracker.writenfc.WriteNfcActivity"
+        android:name="net.eucalypto.timetracker.nfc.write.WriteNfcActivity"
         android:label="WriteNfcActivity">
         <argument
-            android:name="nfcCode"
+            android:name="nfcMessage"
             app:argType="string" />
     </activity>
 </navigation>

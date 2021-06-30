@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.nfc
+package net.eucalypto.timetracker.nfc.read
 
 import android.app.Activity
 import android.nfc.NdefMessage
@@ -10,7 +10,7 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import timber.log.Timber
 
-class NfcActivity : Activity() {
+class ReadNfcActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,15 +23,15 @@ class NfcActivity : Activity() {
         val payload = message.records.first().payload
         val text = String(payload)
 
-        val inputData = Data.Builder().putString(NfcWorker.TEXT_KEY, text).build()
+        val inputData = Data.Builder().putString(ReadNfcWorker.TEXT_KEY, text).build()
 
-        val workRequest = OneTimeWorkRequest.Builder(NfcWorker::class.java)
+        val workRequest = OneTimeWorkRequest.Builder(ReadNfcWorker::class.java)
             .setInputData(inputData)
             .build()
 
-        Timber.d("trying to start NfcWorker")
+        Timber.d("trying to start ReadNfcWorker")
         WorkManager.getInstance(applicationContext).enqueueUniqueWork(
-            NfcWorker.WORK_NAME,
+            ReadNfcWorker.WORK_NAME,
             ExistingWorkPolicy.REPLACE,
             workRequest
         )

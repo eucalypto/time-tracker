@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TimeTracker</string>
+    <string name="back_button">Go back</string>
 </resources>

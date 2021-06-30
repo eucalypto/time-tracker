@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.nfc
+package net.eucalypto.timetracker.nfc.read
 
 import android.content.Context
 import android.widget.Toast
@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
-class NfcWorker(appContext: Context, params: WorkerParameters) :
+class ReadNfcWorker(appContext: Context, params: WorkerParameters) :
     CoroutineWorker(appContext, params) {
 
     override suspend fun doWork(): Result {
@@ -25,7 +25,7 @@ class NfcWorker(appContext: Context, params: WorkerParameters) :
     }
 
     companion object {
-        const val WORK_NAME = "net.eucalypto.timetracker.NfcWorker"
+        const val WORK_NAME = "net.eucalypto.timetracker.ReadNfcWorker"
         const val TEXT_KEY = "text_key"
     }
 }

@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.writenfc
+package net.eucalypto.timetracker.nfc.write
 
 import android.nfc.NdefMessage
 import android.nfc.Tag
