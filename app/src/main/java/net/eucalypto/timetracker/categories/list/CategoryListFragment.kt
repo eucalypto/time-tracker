@@ -30,15 +30,28 @@ class CategoryListFragment : Fragment() {
 
         val binding = DataBindingUtil.getBinding<CategoryListFragmentBinding>(view)!!
 
-        binding.categoryList.adapter = CategoryAdapter(
-            onWriteNfcButtonClicked = {
-                val action = CategoryListFragmentDirections.actionToWriteNfcActivity(it.toString())
-                findNavController().navigate(action)
-            }
-        ).apply {
-            submitList(viewModel.dummyList)
+        setupCategoryRecyclerView(binding)
+
+        binding.addCategoryFab.setOnClickListener {
+            val action = CategoryListFragmentDirections.actionToEditCategoryFragment()
+            findNavController().navigate(action)
         }
-        binding.categoryList.layoutManager = LinearLayoutManager(requireContext())
+    }
+
+    private fun setupCategoryRecyclerView(binding: CategoryListFragmentBinding) {
+        binding.categoryList.apply {
+            adapter = CategoryAdapter(
+                onWriteNfcButtonClicked = {
+                    val action =
+                        CategoryListFragmentDirections.actionToWriteNfcActivity(it.toString())
+                    findNavController().navigate(action)
+                }
+            ).apply {
+                submitList(viewModel.dummyList)
+            }
+
+            layoutManager = LinearLayoutManager(requireContext())
+        }
     }
 
 }

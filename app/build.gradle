@@ -32,6 +32,12 @@ android {
         }
     }
 
+    kapt {
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas".toString())
+        }
+    }
+
     buildFeatures {
         viewBinding true
         dataBinding true

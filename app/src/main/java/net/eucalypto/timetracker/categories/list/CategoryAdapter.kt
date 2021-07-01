@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import net.eucalypto.timetracker.data.model.Category
 import net.eucalypto.timetracker.databinding.CategoryListItemBinding
+import net.eucalypto.timetracker.domain.model.Category
 import java.util.*
 
 class CategoryAdapter(private val onWriteNfcButtonClicked: (UUID) -> Unit) :
