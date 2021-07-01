@@ -15,3 +15,7 @@ data class DatabaseCategory(
 fun Category.asDatabaseModel(): DatabaseCategory {
     return DatabaseCategory(id, name)
 }
+
+fun List<DatabaseCategory>.asDomainModel(): List<Category> = this.map {
+    Category(it.name, it.id)
+}

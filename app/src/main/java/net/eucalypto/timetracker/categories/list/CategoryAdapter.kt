@@ -2,6 +2,7 @@ package net.eucalypto.timetracker.categories.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -53,5 +54,10 @@ class CategoryDiffCallback : ItemCallback<Category>() {
     override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
         return oldItem == newItem
     }
+}
 
+
+@BindingAdapter("categoryList")
+fun bindCategoryList(recycler: RecyclerView, list: List<Category>?) {
+    (recycler.adapter as CategoryAdapter).submitList(list)
 }

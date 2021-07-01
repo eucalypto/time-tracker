@@ -27,6 +27,7 @@ class EditCategoryViewModel(private val repo: Repository) : ViewModel() {
                 throw IllegalArgumentException("Unknown class: ${modelClass.name}")
             }
 
+            @Suppress("unchecked_cast")
             return EditCategoryViewModel(repository) as T
         }
 

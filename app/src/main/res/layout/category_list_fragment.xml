@@ -19,6 +19,7 @@
             android:id="@+id/category_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:categoryList="@{viewModel.categoryList}"
             tools:listitem="@layout/category_list_item" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

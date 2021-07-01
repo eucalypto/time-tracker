@@ -9,11 +9,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import net.eucalypto.timetracker.data.Repository
+import net.eucalypto.timetracker.data.database.getDatabase
 import net.eucalypto.timetracker.databinding.CategoryListFragmentBinding
 
 class CategoryListFragment : Fragment() {
 
-    private val viewModel: CategoryListViewModel by viewModels()
+    private val viewModel: CategoryListViewModel by viewModels {
+        val dao = getDatabase(requireContext().applicationContext).categoryDao
+        CategoryListViewModel.Factory(Repository(dao))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,6 +26,8 @@ class CategoryListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = CategoryListFragmentBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
@@ -40,16 +47,15 @@ class CategoryListFragment : Fragment() {
 
     private fun setupCategoryRecyclerView(binding: CategoryListFragmentBinding) {
         binding.categoryList.apply {
-            adapter = CategoryAdapter(
+            val categoryAdapter = CategoryAdapter(
                 onWriteNfcButtonClicked = {
                     val action =
                         CategoryListFragmentDirections.actionToWriteNfcActivity(it.toString())
                     findNavController().navigate(action)
                 }
-            ).apply {
-                submitList(viewModel.dummyList)
-            }
+            )
 
+            adapter = categoryAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
     }
