@@ -16,8 +16,12 @@ class Repository(
             it.asDomainModel()
         }
 
-    suspend fun insertCategory(category: Category) {
+    suspend fun insert(category: Category) {
         categoryDao.insert(category.asDatabaseModel())
+    }
+
+    suspend fun delete(category: Category) {
+        categoryDao.delete(category.asDatabaseModel())
     }
 
 }

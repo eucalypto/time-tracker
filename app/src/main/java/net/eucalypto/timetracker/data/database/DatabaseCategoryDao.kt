@@ -1,10 +1,7 @@
 package net.eucalypto.timetracker.data.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import net.eucalypto.timetracker.data.database.entities.DatabaseCategory
 
 @Dao
@@ -15,5 +12,8 @@ interface DatabaseCategoryDao {
 
     @Query("SELECT * FROM activity_categories")
     fun categoryList(): LiveData<List<DatabaseCategory>>
+
+    @Delete
+    suspend fun delete(category: DatabaseCategory)
 
 }

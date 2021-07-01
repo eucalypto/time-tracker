@@ -8,4 +8,5 @@
     <string name="activity_category_name">Activty Category Name:</string>
     <string name="category_name_edit_hint">Category Name</string>
     <string name="done_button">Done</string>
+    <string name="delete_button">Delete</string>
 </resources>
