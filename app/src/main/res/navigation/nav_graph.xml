@@ -6,16 +6,6 @@
     app:startDestination="@id/categoryListFragment">
 
     <fragment
-        android:id="@+id/addEventFragment"
-        android:name="net.eucalypto.timetracker.record.AddEventFragment"
-        android:label="AddEventFragment"
-        tools:layout="@layout/add_event_fragment">
-        <action
-            android:id="@+id/action_to_writeNfcActivity"
-            app:destination="@id/writeNfcActivity" />
-    </fragment>
-
-    <fragment
         android:id="@+id/categoryListFragment"
         android:name="net.eucalypto.timetracker.categories.list.CategoryListFragment"
         android:label="CategoryListFragment"
