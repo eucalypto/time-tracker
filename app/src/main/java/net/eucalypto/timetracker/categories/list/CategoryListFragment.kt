@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import net.eucalypto.timetracker.data.Repository
 import net.eucalypto.timetracker.data.database.getDatabase
 import net.eucalypto.timetracker.databinding.CategoryListFragmentBinding
+import net.eucalypto.timetracker.domain.model.Category
 
 class CategoryListFragment : Fragment() {
 
@@ -40,8 +41,9 @@ class CategoryListFragment : Fragment() {
         setupCategoryRecyclerView(binding)
 
         binding.addCategoryFab.setOnClickListener {
-            val action = CategoryListFragmentDirections.actionToEditCategoryFragment()
-            findNavController().navigate(action)
+            val toEditCategory =
+                CategoryListFragmentDirections.actionToEditCategoryFragment(Category())
+            findNavController().navigate(toEditCategory)
         }
     }
 
@@ -49,9 +51,16 @@ class CategoryListFragment : Fragment() {
         binding.categoryList.apply {
             val categoryAdapter = CategoryAdapter(
                 onWriteNfcButtonClicked = {
-                    val action =
+                    val toWriteNfc =
                         CategoryListFragmentDirections.actionToWriteNfcActivity(it.toString())
-                    findNavController().navigate(action)
+                    findNavController().navigate(toWriteNfc)
+                },
+                onEditButtonClicked = { existingCategory ->
+                    val toEditCategory =
+                        CategoryListFragmentDirections.actionToEditCategoryFragment(
+                            existingCategory
+                        )
+                    findNavController().navigate(toEditCategory)
                 }
             )
 

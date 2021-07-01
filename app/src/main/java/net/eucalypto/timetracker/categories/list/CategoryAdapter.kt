@@ -10,7 +10,10 @@ import net.eucalypto.timetracker.databinding.CategoryListItemBinding
 import net.eucalypto.timetracker.domain.model.Category
 import java.util.*
 
-class CategoryAdapter(private val onWriteNfcButtonClicked: (UUID) -> Unit) :
+class CategoryAdapter(
+    private val onWriteNfcButtonClicked: (UUID) -> Unit,
+    private val onEditButtonClicked: (Category) -> Unit
+) :
     ListAdapter<Category, CategoryViewHolder>(CategoryDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
@@ -19,7 +22,7 @@ class CategoryAdapter(private val onWriteNfcButtonClicked: (UUID) -> Unit) :
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         val listItem = getItem(position)
-        holder.bind(listItem, onWriteNfcButtonClicked)
+        holder.bind(listItem, onWriteNfcButtonClicked, onEditButtonClicked)
     }
 }
 
@@ -30,10 +33,15 @@ private constructor(private val binding: CategoryListItemBinding) :
 
     lateinit var category: Category
 
-    fun bind(category: Category, onWriteNfcButtonClicked: (UUID) -> Unit) {
+    fun bind(
+        category: Category,
+        onWriteNfcButtonClicked: (UUID) -> Unit,
+        onEditButtonClicked: (Category) -> Unit
+    ) {
         this.category = category
         binding.categoryName.text = category.name
         binding.writeNfcButton.setOnClickListener { onWriteNfcButtonClicked(category.id) }
+        binding.editButton.setOnClickListener { onEditButtonClicked(category) }
     }
 
     companion object {

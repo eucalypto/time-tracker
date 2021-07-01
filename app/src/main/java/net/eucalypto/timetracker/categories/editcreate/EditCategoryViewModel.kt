@@ -4,14 +4,20 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import net.eucalypto.timetracker.data.Repository
 import net.eucalypto.timetracker.domain.model.Category
+import java.util.*
 
-class EditCategoryViewModel(private val repo: Repository) : ViewModel() {
+class EditCategoryViewModel(
+    private val repo: Repository,
+    private val category: Category
+) :
+    ViewModel() {
 
-    val categoryName = MutableLiveData<String>()
+    val categoryName = MutableLiveData(category.name)
 
     val isFinished: LiveData<Boolean>
         get() = _isFinished
     private val _isFinished = MutableLiveData(false)
+
 
     fun onDoneButtonClicked() {
         viewModelScope.launch { saveCategory() }
@@ -21,12 +27,13 @@ class EditCategoryViewModel(private val repo: Repository) : ViewModel() {
     private suspend fun saveCategory() {
         categoryName.value?.let {
             if (it.isEmpty()) return@let
-            repo.insertCategory(Category(it))
+            repo.insertCategory(category.withName(it))
         }
     }
 
 
-    class Factory(private val repository: Repository) : ViewModelProvider.Factory {
+    class Factory(private val repository: Repository, private val category: Category) :
+        ViewModelProvider.Factory {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (!modelClass.isAssignableFrom(EditCategoryViewModel::class.java)) {
@@ -34,7 +41,7 @@ class EditCategoryViewModel(private val repo: Repository) : ViewModel() {
             }
 
             @Suppress("unchecked_cast")
-            return EditCategoryViewModel(repository) as T
+            return EditCategoryViewModel(repository, category) as T
         }
 
     }

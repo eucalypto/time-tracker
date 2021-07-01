@@ -4,20 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import net.eucalypto.timetracker.data.Repository
 import net.eucalypto.timetracker.data.database.getDatabase
 import net.eucalypto.timetracker.databinding.EditCategoryFragmentBinding
 
 class EditCategoryFragment : Fragment() {
 
+    private val args: EditCategoryFragmentArgs by navArgs()
+
     private val viewModel: EditCategoryViewModel by viewModels {
         val dao = getDatabase(requireContext().applicationContext).categoryDao
         val repository = Repository(dao)
-        EditCategoryViewModel.Factory(repository)
+        EditCategoryViewModel.Factory(repository, args.category)
     }
 
     override fun onCreateView(
@@ -34,8 +36,6 @@ class EditCategoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val binding = DataBindingUtil.getBinding<EditCategoryFragmentBinding>(view)!!
 
         viewModel.isFinished.observe(viewLifecycleOwner) { isFinished ->
             if (isFinished) {

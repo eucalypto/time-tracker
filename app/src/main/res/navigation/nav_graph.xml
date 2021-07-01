@@ -46,5 +46,8 @@
         <action
             android:id="@+id/action_to_categoryListFragment"
             app:destination="@id/categoryListFragment" />
+        <argument
+            android:name="category"
+            app:argType="net.eucalypto.timetracker.domain.model.Category" />
     </fragment>
 </navigation>
