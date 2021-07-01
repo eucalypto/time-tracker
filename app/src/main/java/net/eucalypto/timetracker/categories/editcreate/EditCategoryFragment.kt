@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import net.eucalypto.timetracker.data.Repository
 import net.eucalypto.timetracker.data.database.getDatabase
 import net.eucalypto.timetracker.databinding.EditCategoryFragmentBinding
@@ -25,6 +26,8 @@ class EditCategoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = EditCategoryFragmentBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
@@ -34,12 +37,11 @@ class EditCategoryFragment : Fragment() {
 
         val binding = DataBindingUtil.getBinding<EditCategoryFragmentBinding>(view)!!
 
-        binding.viewModel = viewModel
-    }
-
-    override fun onStop() {
-        super.onStop()
-
-        viewModel.saveCategory()
+        viewModel.isFinished.observe(viewLifecycleOwner) { isFinished ->
+            if (isFinished) {
+                val toCategoryList = EditCategoryFragmentDirections.actionToCategoryListFragment()
+                findNavController().navigate(toCategoryList)
+            }
+        }
     }
 }

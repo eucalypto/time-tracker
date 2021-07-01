@@ -42,5 +42,9 @@
         android:id="@+id/editCategoryFragment"
         android:name="net.eucalypto.timetracker.categories.editcreate.EditCategoryFragment"
         android:label="EditCategoryFragment"
-        tools:layout="@layout/edit_category_fragment" />
+        tools:layout="@layout/edit_category_fragment">
+        <action
+            android:id="@+id/action_to_categoryListFragment"
+            app:destination="@id/categoryListFragment" />
+    </fragment>
 </navigation>
