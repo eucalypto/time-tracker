@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import net.eucalypto.timetracker.databinding.CategoryListFragmentBinding
 
@@ -29,7 +30,12 @@ class CategoryListFragment : Fragment() {
 
         val binding = DataBindingUtil.getBinding<CategoryListFragmentBinding>(view)!!
 
-        binding.categoryList.adapter = CategoryAdapter().apply {
+        binding.categoryList.adapter = CategoryAdapter(
+            onWriteNfcButtonClicked = {
+                val action = CategoryListFragmentDirections.actionToWriteNfcActivity(it.toString())
+                findNavController().navigate(action)
+            }
+        ).apply {
             submitList(viewModel.dummyList)
         }
         binding.categoryList.layoutManager = LinearLayoutManager(requireContext())
