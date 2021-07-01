@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">TimeTracker</string>
     <string name="back_button">Go back</string>
+    <string name="write_nfc_instruction">Hold the NFC Tag to your phone to start the write process</string>
 </resources>

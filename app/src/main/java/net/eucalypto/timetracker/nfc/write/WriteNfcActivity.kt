@@ -21,7 +21,7 @@ import java.io.IOException
 
 class WriteNfcActivity : AppCompatActivity() {
 
-    private lateinit var adapter: NfcAdapter
+    private lateinit var nfcAdapter: NfcAdapter
 
     private val args: WriteNfcActivityArgs by navArgs()
 
@@ -31,7 +31,7 @@ class WriteNfcActivity : AppCompatActivity() {
         val binding = WriteNfcActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = NfcAdapter.getDefaultAdapter(this)
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this)
 
         binding.backButton.setOnClickListener {
             finish()
@@ -41,11 +41,14 @@ class WriteNfcActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
+        writeMessageToTag(intent)
+    }
+
+    private fun writeMessageToTag(intent: Intent) {
 
         val message = createNdefMessage()
-
-
         val tagFromIntent: Tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)!!
+
         val tagHandler = TagHandler(tagFromIntent)
         CoroutineScope(Dispatchers.Main).launch {
             try {
@@ -58,7 +61,6 @@ class WriteNfcActivity : AppCompatActivity() {
                 Toast.makeText(this@WriteNfcActivity, "Error writing tag", Toast.LENGTH_LONG).show()
             }
         }
-
     }
 
     private fun createNdefMessage(): NdefMessage {
@@ -74,6 +76,7 @@ class WriteNfcActivity : AppCompatActivity() {
     }
 
     private fun enableNfcIntentInterception() {
+
         val fooIntent = Intent(this, this::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         }
@@ -85,7 +88,7 @@ class WriteNfcActivity : AppCompatActivity() {
         val intentFiltersArray = arrayOf(ndefIntentFilter)
         val techListArray = arrayOf(arrayOf(NfcA::class.java.name))
 
-        adapter.enableForegroundDispatch(
+        nfcAdapter.enableForegroundDispatch(
             this,
             pendingIntent,
             intentFiltersArray,
@@ -95,7 +98,7 @@ class WriteNfcActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        adapter.disableForegroundDispatch(this)
+        nfcAdapter.disableForegroundDispatch(this)
     }
 }
 
