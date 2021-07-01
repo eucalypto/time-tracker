@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import net.eucalypto.timetracker.database.WorkStatusDatabase
+import net.eucalypto.timetracker.data.database.WorkStatusDatabase
 import net.eucalypto.timetracker.databinding.AddEventFragmentBinding
 
 class AddEventFragment : Fragment() {

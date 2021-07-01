@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
-import net.eucalypto.timetracker.database.WorkStatus
-import net.eucalypto.timetracker.database.WorkStatusDatabaseDao
+import net.eucalypto.timetracker.data.database.WorkStatus
+import net.eucalypto.timetracker.data.database.WorkStatusDatabaseDao
 import timber.log.Timber
 
 class AddEventViewModel(

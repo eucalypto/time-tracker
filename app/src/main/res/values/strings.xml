@@ -2,4 +2,7 @@
     <string name="app_name">TimeTracker</string>
     <string name="back_button">Go back</string>
     <string name="write_nfc_instruction">Hold the NFC Tag to your phone to start the write process</string>
+    <string name="add_category_fab_description">Add Category of Activity</string>
+    <string name="edit_button">Edit</string>
+    <string name="write_nfc_button">Write NFC Tag</string>
 </resources>

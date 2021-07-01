@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.database
+package net.eucalypto.timetracker.data.database
 
 import android.content.Context
 import androidx.room.Database
