@@ -3,6 +3,7 @@ package net.eucalypto.timetracker.data.database
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import net.eucalypto.timetracker.data.database.entities.DatabaseCategory
+import java.util.*
 
 @Dao
 interface DatabaseCategoryDao {
@@ -15,5 +16,8 @@ interface DatabaseCategoryDao {
 
     @Delete
     suspend fun delete(category: DatabaseCategory)
+
+    @Query("SELECT * FROM activity_categories WHERE id=(:id)")
+    suspend fun byId(id: UUID): DatabaseCategory?
 
 }

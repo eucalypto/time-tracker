@@ -8,10 +8,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import net.eucalypto.timetracker.databinding.CategoryListItemBinding
 import net.eucalypto.timetracker.domain.model.Category
-import java.util.*
 
 class CategoryAdapter(
-    private val onWriteNfcButtonClicked: (UUID) -> Unit,
+    private val onWriteNfcButtonClicked: (Category) -> Unit,
     private val onEditButtonClicked: (Category) -> Unit
 ) :
     ListAdapter<Category, CategoryViewHolder>(CategoryDiffCallback()) {
@@ -35,12 +34,12 @@ private constructor(private val binding: CategoryListItemBinding) :
 
     fun bind(
         category: Category,
-        onWriteNfcButtonClicked: (UUID) -> Unit,
+        onWriteNfcButtonClicked: (Category) -> Unit,
         onEditButtonClicked: (Category) -> Unit
     ) {
         this.category = category
         binding.categoryName.text = category.name
-        binding.writeNfcButton.setOnClickListener { onWriteNfcButtonClicked(category.id) }
+        binding.writeNfcButton.setOnClickListener { onWriteNfcButtonClicked(category) }
         binding.editButton.setOnClickListener { onEditButtonClicked(category) }
     }
 

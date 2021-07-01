@@ -24,8 +24,8 @@
         android:label="WriteNfcActivity"
         tools:layout="@layout/write_nfc_activity">
         <argument
-            android:name="nfcMessage"
-            app:argType="string" />
+            android:name="category"
+            app:argType="net.eucalypto.timetracker.domain.model.Category" />
     </activity>
 
     <fragment

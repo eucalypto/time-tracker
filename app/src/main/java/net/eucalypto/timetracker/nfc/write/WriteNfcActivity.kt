@@ -15,6 +15,7 @@ import androidx.navigation.navArgs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import net.eucalypto.timetracker.R
 import net.eucalypto.timetracker.databinding.WriteNfcActivityBinding
 import timber.log.Timber
 import java.io.IOException
@@ -24,6 +25,8 @@ class WriteNfcActivity : AppCompatActivity() {
     private lateinit var nfcAdapter: NfcAdapter
 
     private val args: WriteNfcActivityArgs by navArgs()
+
+    private val category by lazy { args.category }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,17 +57,25 @@ class WriteNfcActivity : AppCompatActivity() {
             try {
                 tagHandler.writeMessage(message)
                 Toast
-                    .makeText(this@WriteNfcActivity, "Tag written successfully", Toast.LENGTH_LONG)
+                    .makeText(
+                        this@WriteNfcActivity,
+                        getString(R.string.toast_message_success, category.name),
+                        Toast.LENGTH_LONG
+                    )
                     .show()
             } catch (e: IOException) {
-                Timber.e(e, "Could not write NFC tag")
-                Toast.makeText(this@WriteNfcActivity, "Error writing tag", Toast.LENGTH_LONG).show()
+                Timber.e(e, "Could not write NFC tag for category: ${category.name}")
+                Toast.makeText(
+                    this@WriteNfcActivity,
+                    getString(R.string.toast_message_fail, category.name),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
 
     private fun createNdefMessage(): NdefMessage {
-        val record = NdefRecord.createMime("text/plain", args.nfcMessage.toByteArray())
+        val record = NdefRecord.createMime("text/plain", category.id.toString().toByteArray())
         val androidApplicationRecord =
             NdefRecord.createApplicationRecord(this.packageName)
         return NdefMessage(record, androidApplicationRecord)

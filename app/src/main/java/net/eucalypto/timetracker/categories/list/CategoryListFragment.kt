@@ -50,9 +50,9 @@ class CategoryListFragment : Fragment() {
     private fun setupCategoryRecyclerView(binding: CategoryListFragmentBinding) {
         binding.categoryList.apply {
             val categoryAdapter = CategoryAdapter(
-                onWriteNfcButtonClicked = {
+                onWriteNfcButtonClicked = { category ->
                     val toWriteNfc =
-                        CategoryListFragmentDirections.actionToWriteNfcActivity(it.toString())
+                        CategoryListFragmentDirections.actionToWriteNfcActivity(category)
                     findNavController().navigate(toWriteNfc)
                 },
                 onEditButtonClicked = { existingCategory ->

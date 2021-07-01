@@ -9,4 +9,6 @@
     <string name="category_name_edit_hint">Category Name</string>
     <string name="done_button">Done</string>
     <string name="delete_button">Delete</string>
+    <string name="toast_message_success">Tag written successfully with category: %s</string>
+    <string name="toast_message_fail">Error writing tag with category: %s</string>
 </resources>
