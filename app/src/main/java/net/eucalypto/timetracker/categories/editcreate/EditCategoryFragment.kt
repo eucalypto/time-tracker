@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import net.eucalypto.timetracker.data.Repository
 import net.eucalypto.timetracker.data.database.getDatabase
@@ -39,8 +38,7 @@ class EditCategoryFragment : Fragment() {
 
         viewModel.isFinished.observe(viewLifecycleOwner) { isFinished ->
             if (isFinished) {
-                val toCategoryList = EditCategoryFragmentDirections.actionToCategoryListFragment()
-                findNavController().navigate(toCategoryList)
+                requireActivity().onBackPressed()
             }
         }
     }
