@@ -24,8 +24,8 @@
         android:label="WriteNfcActivity"
         tools:layout="@layout/write_nfc_activity">
         <argument
-            android:name="category"
-            app:argType="net.eucalypto.timetracker.domain.model.Category" />
+            android:name="categoryParcel"
+            app:argType="net.eucalypto.timetracker.domain.model.util.CategoryParcel" />
     </activity>
 
     <fragment
@@ -34,7 +34,7 @@
         android:label="EditCategoryFragment"
         tools:layout="@layout/edit_category_fragment">
         <argument
-            android:name="category"
-            app:argType="net.eucalypto.timetracker.domain.model.Category" />
+            android:name="categoryParcel"
+            app:argType="net.eucalypto.timetracker.domain.model.util.CategoryParcel" />
     </fragment>
 </navigation>

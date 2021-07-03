@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.eucalypto.timetracker.R
 import net.eucalypto.timetracker.databinding.WriteNfcActivityBinding
+import net.eucalypto.timetracker.domain.model.util.asCategory
 import timber.log.Timber
 import java.io.IOException
 
@@ -26,7 +27,7 @@ class WriteNfcActivity : AppCompatActivity() {
 
     private val args: WriteNfcActivityArgs by navArgs()
 
-    private val category by lazy { args.category }
+    private val category by lazy { args.categoryParcel.asCategory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

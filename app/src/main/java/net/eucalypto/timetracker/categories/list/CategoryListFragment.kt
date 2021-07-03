@@ -13,6 +13,7 @@ import net.eucalypto.timetracker.data.Repository
 import net.eucalypto.timetracker.data.database.getDatabase
 import net.eucalypto.timetracker.databinding.CategoryListFragmentBinding
 import net.eucalypto.timetracker.domain.model.Category
+import net.eucalypto.timetracker.domain.model.util.asParcel
 
 class CategoryListFragment : Fragment() {
 
@@ -42,7 +43,7 @@ class CategoryListFragment : Fragment() {
 
         binding.addCategoryFab.setOnClickListener {
             val toEditCategory =
-                CategoryListFragmentDirections.actionToEditCategoryFragment(Category())
+                CategoryListFragmentDirections.actionToEditCategoryFragment(Category().asParcel())
             findNavController().navigate(toEditCategory)
         }
     }
@@ -52,13 +53,13 @@ class CategoryListFragment : Fragment() {
             val categoryAdapter = CategoryAdapter(
                 onWriteNfcButtonClicked = { category ->
                     val toWriteNfc =
-                        CategoryListFragmentDirections.actionToWriteNfcActivity(category)
+                        CategoryListFragmentDirections.actionToWriteNfcActivity(category.asParcel())
                     findNavController().navigate(toWriteNfc)
                 },
                 onEditButtonClicked = { existingCategory ->
                     val toEditCategory =
                         CategoryListFragmentDirections.actionToEditCategoryFragment(
-                            existingCategory
+                            existingCategory.asParcel()
                         )
                     findNavController().navigate(toEditCategory)
                 }

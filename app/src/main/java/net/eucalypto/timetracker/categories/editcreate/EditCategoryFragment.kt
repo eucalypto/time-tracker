@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import net.eucalypto.timetracker.data.Repository
 import net.eucalypto.timetracker.data.database.getDatabase
 import net.eucalypto.timetracker.databinding.EditCategoryFragmentBinding
+import net.eucalypto.timetracker.domain.model.util.asCategory
 
 class EditCategoryFragment : Fragment() {
 
@@ -18,7 +19,7 @@ class EditCategoryFragment : Fragment() {
     private val viewModel: EditCategoryViewModel by viewModels {
         val dao = getDatabase(requireContext().applicationContext).categoryDao
         val repository = Repository(dao)
-        EditCategoryViewModel.Factory(repository, args.category)
+        EditCategoryViewModel.Factory(repository, args.categoryParcel.asCategory())
     }
 
     override fun onCreateView(
