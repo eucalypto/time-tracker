@@ -18,8 +18,8 @@ import net.eucalypto.timetracker.domain.model.util.asParcel
 class CategoryListFragment : Fragment() {
 
     private val viewModel: CategoryListViewModel by viewModels {
-        val dao = getDatabase(requireContext().applicationContext).categoryDao
-        CategoryListViewModel.Factory(Repository(dao))
+        val database = getDatabase(requireContext().applicationContext)
+        CategoryListViewModel.Factory(Repository(database))
     }
 
     override fun onCreateView(

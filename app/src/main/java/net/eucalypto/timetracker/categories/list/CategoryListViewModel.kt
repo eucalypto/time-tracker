@@ -8,7 +8,7 @@ import net.eucalypto.timetracker.domain.model.Category
 
 class CategoryListViewModel(repository: Repository) : ViewModel() {
 
-    val categoryList: LiveData<List<Category>> = repository.getCategoryList()
+    val categoryList: LiveData<List<Category>> = repository.getCategoriesAsLiveData()
 
 
     class Factory(private val repository: Repository) : ViewModelProvider.Factory {

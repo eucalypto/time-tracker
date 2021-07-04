@@ -17,8 +17,8 @@ class EditCategoryFragment : Fragment() {
     private val args: EditCategoryFragmentArgs by navArgs()
 
     private val viewModel: EditCategoryViewModel by viewModels {
-        val dao = getDatabase(requireContext().applicationContext).categoryDao
-        val repository = Repository(dao)
+        val database = getDatabase(requireContext().applicationContext)
+        val repository = Repository(database)
         EditCategoryViewModel.Factory(repository, args.categoryParcel.asCategory())
     }
 

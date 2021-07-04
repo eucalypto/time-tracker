@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/categoryListFragment">
+    app:startDestination="@id/activityListFragment">
 
     <fragment
         android:id="@+id/categoryListFragment"
@@ -37,4 +37,9 @@
             android:name="categoryParcel"
             app:argType="net.eucalypto.timetracker.domain.model.util.CategoryParcel" />
     </fragment>
+    <fragment
+        android:id="@+id/activityListFragment"
+        android:name="net.eucalypto.timetracker.activitylist.ActivityListFragment"
+        android:label="ActivityListFragment"
+        tools:layout="@layout/activity_list_fragment" />
 </navigation>

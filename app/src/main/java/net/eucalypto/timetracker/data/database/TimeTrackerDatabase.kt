@@ -5,13 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import net.eucalypto.timetracker.data.database.entities.DatabaseActivity
 import net.eucalypto.timetracker.data.database.entities.DatabaseCategory
 
-@Database(entities = [DatabaseCategory::class], version = 1)
+@Database(entities = [DatabaseCategory::class, DatabaseActivity::class], version = 1)
 @TypeConverters(RoomTypeConverters::class)
 abstract class TimeTrackerDatabase : RoomDatabase() {
 
     abstract val categoryDao: DatabaseCategoryDao
+    abstract val activityDao: DatabaseActivityDao
 
 }
 

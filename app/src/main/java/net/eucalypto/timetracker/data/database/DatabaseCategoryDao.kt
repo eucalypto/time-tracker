@@ -12,7 +12,11 @@ interface DatabaseCategoryDao {
     suspend fun insert(category: DatabaseCategory)
 
     @Query("SELECT * FROM activity_categories")
-    fun categoryList(): LiveData<List<DatabaseCategory>>
+    fun categoriesAsLiveData(): LiveData<List<DatabaseCategory>>
+
+    @Query("SELECT * FROM activity_categories")
+    suspend fun categoryList(): List<DatabaseCategory>
+
 
     @Delete
     suspend fun delete(category: DatabaseCategory)

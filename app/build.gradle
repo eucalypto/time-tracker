@@ -19,6 +19,9 @@ android {
     }
 
     compileOptions {
+        // Flag to enable support for the new Java APIs
+        coreLibraryDesugaringEnabled true
+
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -62,11 +65,16 @@ dependencies {
     // Timber for logging
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
-    // Nav
+    // LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
+
+    // Navigation Component
     def nav_version = '2.3.5'
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
+    // De-sugaring for new Java features on old Android APIs
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
     // WorkManager: Kotlin + coroutines
     def work_version = "2.5.0"
