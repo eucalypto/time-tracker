@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import net.eucalypto.timetracker.R
 import net.eucalypto.timetracker.data.Repository
 import net.eucalypto.timetracker.data.database.getDatabase
 import net.eucalypto.timetracker.databinding.CategoryListFragmentBinding
@@ -63,7 +65,17 @@ class CategoryListFragment : Fragment() {
                         )
                     findNavController().navigate(toEditCategory)
                 },
-                onDeleteButtonClicked = { viewModel.onDeleteMenuItemClicked(it) }
+                onDeleteButtonClicked = {
+                    AlertDialog.Builder(context)
+                        .setTitle(getString(R.string.dialog_delete_title, it.name))
+                        .setMessage(getString(R.string.dialog_delete_message, it.name))
+                        .setNegativeButton(R.string.dialog_delete_button_cancel, null)
+                        .setPositiveButton(R.string.dialog_delete_button_delete) { _, _ ->
+                            viewModel.onDeleteMenuItemClicked(it)
+                        }
+                        .create()
+                        .show()
+                }
             )
 
             adapter = categoryAdapter

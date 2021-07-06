@@ -20,4 +20,8 @@
     <string name="context_menu_icon">⁞</string>
     <string name="menu_item_edit">Edit</string>
     <string name="menu_item_write_nfc">Write NFC Tag</string>
+    <string name="dialog_delete_title">Delete category: %s?</string>
+    <string name="dialog_delete_message">Do you really want to delete category %s?</string>
+    <string name="dialog_delete_button_cancel">Cancel</string>
+    <string name="dialog_delete_button_delete">Delete</string>
 </resources>
