@@ -16,4 +16,8 @@
     <string name="read_nfc_toast_finish_last_activity_and_start_new_one">You just finished your active activity : %s, and started a new activity: %s</string>
     <string name="read_nfc_toast_unknown_activity">Unknown activity category.</string>
     <string name="menu_item_categories">Activity Categories</string>
+    <string name="menu_item_delete">Delete</string>
+    <string name="context_menu_icon">⁞</string>
+    <string name="menu_item_edit">Edit</string>
+    <string name="menu_item_write_nfc">Write NFC Tag</string>
 </resources>
