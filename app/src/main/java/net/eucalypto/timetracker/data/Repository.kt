@@ -39,6 +39,10 @@ class Repository(
         categoryDao.delete(category.asDatabaseModel())
     }
 
+    suspend fun getCategoryById(categoryId: UUID): Category? {
+        return categoryDao.byId(categoryId)?.asDomainModel()
+    }
+
     fun getActivitiesAsLiveData(): LiveData<List<Activity>> =
         activityDao.getActivitiesAsLiveData().switchMap { databaseActivities ->
             liveData {
@@ -46,8 +50,12 @@ class Repository(
             }
         }
 
-    suspend fun getCategoryById(categoryId: UUID): Category? {
-        return categoryDao.byId(categoryId)?.asDomainModel()
+    suspend fun getActivitiesWithCategory(category: Category): List<Activity> {
+        return activityDao
+            .getActivitiesWithCategory(category.id.toString())
+            .map {
+                domainModelFrom(it)
+            }
     }
 
     suspend fun getLastActivity(): Activity? {
@@ -73,6 +81,10 @@ class Repository(
 
     suspend fun insert(activity: Activity) {
         activityDao.insert(activity.asDataBaseModel())
+    }
+
+    suspend fun delete(activities: List<Activity>) {
+        activityDao.delete(activities.map { it.asDataBaseModel() })
     }
 }
 

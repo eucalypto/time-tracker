@@ -24,15 +24,6 @@ class EditCategoryViewModel(
         _isFinished.value = true
     }
 
-    fun onDeleteButtonClicked() {
-        viewModelScope.launch { deleteCategory() }
-        _isFinished.value = true
-    }
-
-    private suspend fun deleteCategory() {
-        repo.delete(category)
-    }
-
     private suspend fun saveCategory() {
         categoryName.value?.let {
             if (it.isEmpty()) return@let

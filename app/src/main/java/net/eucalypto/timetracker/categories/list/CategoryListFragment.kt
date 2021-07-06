@@ -62,7 +62,8 @@ class CategoryListFragment : Fragment() {
                             existingCategory.asParcel()
                         )
                     findNavController().navigate(toEditCategory)
-                }
+                },
+                onDeleteButtonClicked = { viewModel.onDeleteMenuItemClicked(it) }
             )
 
             adapter = categoryAdapter
