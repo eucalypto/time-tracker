@@ -10,6 +10,7 @@ import net.eucalypto.timetracker.data.database.entities.asDomainModel
 import net.eucalypto.timetracker.data.database.getDatabase
 import net.eucalypto.timetracker.domain.model.Activity
 import net.eucalypto.timetracker.domain.model.Category
+import java.util.*
 
 class Repository(
     database: TimeTrackerDatabase,
@@ -45,6 +46,34 @@ class Repository(
             }
         }
 
+    suspend fun getCategoryById(categoryId: UUID): Category? {
+        return categoryDao.byId(categoryId)?.asDomainModel()
+    }
+
+    suspend fun getLastActivity(): Activity? {
+        val databaseActivity = activityDao.getLastActivity() ?: return null
+        return domainModelFrom(databaseActivity)
+    }
+
+
+    private suspend fun domainModelFrom(databaseActivity: DatabaseActivity): Activity {
+        val uuid = UUID.fromString(databaseActivity.categoryId)
+        val category = getCategoryById(uuid)!!
+        return Activity(
+            category,
+            databaseActivity.startTime,
+            databaseActivity.endTime,
+            databaseActivity.id
+        )
+    }
+
+    suspend fun update(activity: Activity) {
+        activityDao.update(activity.asDataBaseModel())
+    }
+
+    suspend fun insert(activity: Activity) {
+        activityDao.insert(activity.asDataBaseModel())
+    }
 }
 
 private lateinit var INSTANCE: Repository

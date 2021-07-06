@@ -9,6 +9,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import timber.log.Timber
+import java.time.LocalDateTime
 
 class ReadNfcActivity : Activity() {
 
@@ -23,7 +24,12 @@ class ReadNfcActivity : Activity() {
         val payload = message.records.first().payload
         val text = String(payload)
 
-        val inputData = Data.Builder().putString(ReadNfcWorker.TEXT_KEY, text).build()
+        val timestamp = LocalDateTime.now().toString()
+
+        val inputData = Data.Builder()
+            .putString(ReadNfcWorker.CATEGORY_ID_KEY, text)
+            .putString(ReadNfcWorker.TIMESTAMP_STRING_KEY, timestamp)
+            .build()
 
         val workRequest = OneTimeWorkRequest.Builder(ReadNfcWorker::class.java)
             .setInputData(inputData)

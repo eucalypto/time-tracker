@@ -41,5 +41,9 @@
         android:id="@+id/activityListFragment"
         android:name="net.eucalypto.timetracker.activitylist.ActivityListFragment"
         android:label="ActivityListFragment"
-        tools:layout="@layout/activity_list_fragment" />
+        tools:layout="@layout/activity_list_fragment">
+        <action
+            android:id="@+id/action_to_categoryListFragment"
+            app:destination="@id/categoryListFragment" />
+    </fragment>
 </navigation>
