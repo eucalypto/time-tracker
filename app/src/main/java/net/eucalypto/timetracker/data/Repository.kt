@@ -35,6 +35,10 @@ class Repository(
         categoryDao.insert(category.asDatabaseModel())
     }
 
+    suspend fun update(category: Category) {
+        categoryDao.update(category.asDatabaseModel())
+    }
+
     suspend fun delete(category: Category) {
         categoryDao.delete(category.asDatabaseModel())
     }

@@ -11,8 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import net.eucalypto.timetracker.R
-import net.eucalypto.timetracker.data.Repository
-import net.eucalypto.timetracker.data.database.getDatabase
+import net.eucalypto.timetracker.data.getRepository
+import net.eucalypto.timetracker.databinding.CategoryEditNameDialogBinding
 import net.eucalypto.timetracker.databinding.CategoryListFragmentBinding
 import net.eucalypto.timetracker.domain.model.Category
 import net.eucalypto.timetracker.domain.model.util.asParcel
@@ -20,8 +20,7 @@ import net.eucalypto.timetracker.domain.model.util.asParcel
 class CategoryListFragment : Fragment() {
 
     private val viewModel: CategoryListViewModel by viewModels {
-        val database = getDatabase(requireContext().applicationContext)
-        CategoryListViewModel.Factory(Repository(database))
+        CategoryListViewModel.Factory(getRepository(requireContext()))
     }
 
     override fun onCreateView(
@@ -53,34 +52,62 @@ class CategoryListFragment : Fragment() {
     private fun setupCategoryRecyclerView(binding: CategoryListFragmentBinding) {
         binding.categoryList.apply {
             val categoryAdapter = CategoryAdapter(
-                onWriteNfcButtonClicked = { category ->
-                    val toWriteNfc =
-                        CategoryListFragmentDirections.actionToWriteNfcActivity(category.asParcel())
-                    findNavController().navigate(toWriteNfc)
-                },
-                onEditButtonClicked = { existingCategory ->
-                    val toEditCategory =
-                        CategoryListFragmentDirections.actionToEditCategoryFragment(
-                            existingCategory.asParcel()
-                        )
-                    findNavController().navigate(toEditCategory)
-                },
-                onDeleteButtonClicked = {
-                    AlertDialog.Builder(context)
-                        .setTitle(getString(R.string.dialog_delete_title, it.name))
-                        .setMessage(getString(R.string.dialog_delete_message, it.name))
-                        .setNegativeButton(R.string.dialog_delete_button_cancel, null)
-                        .setPositiveButton(R.string.dialog_delete_button_delete) { _, _ ->
-                            viewModel.onDeleteMenuItemClicked(it)
-                        }
-                        .create()
-                        .show()
-                }
+                onWriteNfcClicked = ::showWriteNfcActivityAsDialog,
+                onEditClicked = ::showEditCategoryDialog,
+                onDeleteClicked = ::showDeleteConfirmationDialog
             )
 
             adapter = categoryAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
+    }
+
+    private fun showWriteNfcActivityAsDialog(category: Category) {
+        val toWriteNfc =
+            CategoryListFragmentDirections.actionToWriteNfcActivity(category.asParcel())
+        findNavController().navigate(toWriteNfc)
+    }
+
+    private fun showEditCategoryDialog(category: Category) {
+        val inflater = requireActivity().layoutInflater
+        val inputBinding = CategoryEditNameDialogBinding.inflate(inflater)
+
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.edit_category_name_dialog_title))
+            .setMessage(
+                getString(
+                    R.string.edit_category_name_dialog_message,
+                    category.name
+                )
+            )
+            .setNegativeButton(
+                getString(R.string.edit_category_name_dialog_button_cancel),
+                null
+            )
+            .setPositiveButton(
+                getString(R.string.edit_category_name_dialog_button_rename)
+            ) { _, _ ->
+                inputBinding.categoryNameEdit.editText?.let {
+                    val input = it.text.toString()
+                    if (input.isBlank()) return@let
+                    category.name = input
+                    viewModel.saveCategory(category)
+                }
+            }
+            .setView(inputBinding.root)
+            .create().show()
+    }
+
+    private fun showDeleteConfirmationDialog(category: Category) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.dialog_delete_title, category.name))
+            .setMessage(getString(R.string.dialog_delete_message, category.name))
+            .setNegativeButton(R.string.dialog_delete_button_cancel, null)
+            .setPositiveButton(R.string.dialog_delete_button_delete) { _, _ ->
+                viewModel.onDeleteMenuItemClicked(category)
+            }
+            .create()
+            .show()
     }
 
 }

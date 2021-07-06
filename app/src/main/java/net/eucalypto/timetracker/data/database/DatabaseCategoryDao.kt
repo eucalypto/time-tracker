@@ -24,4 +24,7 @@ interface DatabaseCategoryDao {
     @Query("SELECT * FROM activity_categories WHERE id=(:id)")
     suspend fun byId(id: UUID): DatabaseCategory?
 
+    @Update
+    suspend fun update(category: DatabaseCategory)
+
 }

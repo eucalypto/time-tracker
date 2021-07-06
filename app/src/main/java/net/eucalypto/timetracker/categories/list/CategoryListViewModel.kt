@@ -21,6 +21,10 @@ class CategoryListViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
+    fun saveCategory(category: Category) = viewModelScope.launch {
+        repository.update(category)
+    }
+
     class Factory(private val repository: Repository) : ViewModelProvider.Factory {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

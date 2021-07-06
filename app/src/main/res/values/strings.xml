@@ -5,7 +5,7 @@
     <string name="add_category_fab_description">Add Category of Activity</string>
     <string name="edit_button">Edit</string>
     <string name="write_nfc_button">Write NFC Tag</string>
-    <string name="activity_category_name">Activty Category Name:</string>
+    <string name="activity_category_name">Activity Category Name:</string>
     <string name="category_name_edit_hint">Category Name</string>
     <string name="done_button">Done</string>
     <string name="delete_button">Delete</string>
@@ -25,4 +25,9 @@
     <string name="dialog_delete_button_cancel">Cancel</string>
     <string name="dialog_delete_button_delete">Delete</string>
     <string name="write_nfc_actionbar_title">Write NFC Tag: %s</string>
+    <string name="category_name_change_hint">New Category Name</string>
+    <string name="edit_category_name_dialog_title">Edit Category Name</string>
+    <string name="edit_category_name_dialog_message">Current Category Name: \"%s\"</string>
+    <string name="edit_category_name_dialog_button_cancel">Cancel</string>
+    <string name="edit_category_name_dialog_button_rename">Rename</string>
 </resources>
