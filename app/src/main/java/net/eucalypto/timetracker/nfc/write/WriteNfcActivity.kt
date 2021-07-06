@@ -32,6 +32,8 @@ class WriteNfcActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        title = getString(R.string.write_nfc_actionbar_title, category.name)
+
         val binding = WriteNfcActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

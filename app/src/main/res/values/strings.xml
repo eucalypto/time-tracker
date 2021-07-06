@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">TimeTracker</string>
-    <string name="back_button">Go back</string>
+    <string name="back_button">Done</string>
     <string name="write_nfc_instruction">Hold the NFC Tag to your phone to start the write process</string>
     <string name="add_category_fab_description">Add Category of Activity</string>
     <string name="edit_button">Edit</string>
@@ -24,4 +24,5 @@
     <string name="dialog_delete_message">Do you really want to delete category %s?</string>
     <string name="dialog_delete_button_cancel">Cancel</string>
     <string name="dialog_delete_button_delete">Delete</string>
+    <string name="write_nfc_actionbar_title">Write NFC Tag: %s</string>
 </resources>

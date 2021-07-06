@@ -25,7 +25,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".nfc.write.WriteNfcActivity">
+        <activity
+            android:name=".nfc.write.WriteNfcActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog">
 
         </activity>
 
