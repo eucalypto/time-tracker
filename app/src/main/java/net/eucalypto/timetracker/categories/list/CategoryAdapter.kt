@@ -44,7 +44,7 @@ private constructor(private val binding: CategoryListItemBinding) :
         onDeleteClicked: (Category) -> Unit
     ) {
         this.category = category
-        binding.categoryName.text = category.name
+        binding.category = category
         binding.contextMenuButton.setOnClickListener {
             showContextMenu(
                 it,

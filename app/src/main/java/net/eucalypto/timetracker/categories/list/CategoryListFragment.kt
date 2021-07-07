@@ -90,8 +90,7 @@ class CategoryListFragment : Fragment() {
                 inputBinding.categoryNameEdit.editText?.let {
                     val input = it.text.toString()
                     if (input.isBlank()) return@let
-                    category.name = input
-                    viewModel.saveCategory(category)
+                    viewModel.saveCategory(category.withName(input))
                 }
             }
             .setView(inputBinding.root)

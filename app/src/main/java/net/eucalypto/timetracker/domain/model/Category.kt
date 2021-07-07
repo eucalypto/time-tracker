@@ -3,7 +3,7 @@ package net.eucalypto.timetracker.domain.model
 import java.util.*
 
 data class Category(
-    var name: String = "",
+    val name: String = "",
     val id: UUID = UUID.randomUUID()
 ) {
 

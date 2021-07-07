@@ -20,6 +20,7 @@ class ActivityListViewModelFactory(private val repository: Repository) : ViewMod
             throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
 
+        @Suppress("unchecked_cast")
         return ActivityListViewModel(repository) as T
     }
 
