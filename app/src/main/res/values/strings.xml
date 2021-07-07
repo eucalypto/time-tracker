@@ -30,4 +30,6 @@
     <string name="edit_category_name_dialog_message">Current Category Name: \"%s\"</string>
     <string name="edit_category_name_dialog_button_cancel">Cancel</string>
     <string name="edit_category_name_dialog_button_rename">Rename</string>
+    <string name="activity_list_fragment_title">Activities</string>
+    <string name="category_list_fragment_title">Activity Categories</string>
 </resources>

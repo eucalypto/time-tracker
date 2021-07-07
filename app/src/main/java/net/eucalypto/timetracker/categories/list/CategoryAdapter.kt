@@ -71,7 +71,7 @@ private constructor(private val binding: CategoryListItemBinding) :
         onDeleteClicked: (Category) -> Unit
     ) {
         val menu = PopupMenu(context, it)
-        menu.inflate(R.menu.category_list_item_menu)
+        menu.inflate(R.menu.category_list_item_popup_menu)
         menu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_item_edit -> {
