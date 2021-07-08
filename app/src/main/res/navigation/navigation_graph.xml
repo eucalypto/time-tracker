@@ -46,4 +46,9 @@
             android:id="@+id/action_to_categoryListFragment"
             app:destination="@id/categoryListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="net.eucalypto.timetracker.about.AboutFragment"
+        android:label="@string/about_fragment_navigation_title"
+        tools:layout="@layout/about_fragment" />
 </navigation>
