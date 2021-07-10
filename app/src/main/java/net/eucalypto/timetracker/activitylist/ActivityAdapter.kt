@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import net.eucalypto.timetracker.databinding.ActivityListItemBinding
 import net.eucalypto.timetracker.domain.model.Activity
+import net.eucalypto.timetracker.domain.model.NOT_SET_YET
 import net.eucalypto.timetracker.domain.model.asCustomFormatString
 import java.time.ZonedDateTime
 
@@ -64,5 +65,6 @@ fun bindActivityList(view: RecyclerView, activityList: List<Activity>?) {
 
 @BindingAdapter("dateTime")
 fun bindDate(view: TextView, dateTime: ZonedDateTime?) {
-    view.text = dateTime?.asCustomFormatString()
+    val dateNotSetYet = dateTime == NOT_SET_YET
+    view.text = if (dateNotSetYet) "" else dateTime?.asCustomFormatString()
 }
