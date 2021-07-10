@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 internal class ActivityTest {
 
     @Test
-    fun `finished activity - isFinished returns true`() {
+    fun `endTime set - isFinished returns true`() {
         val finishedActivity = Activity(
             Category("dummy category"),
             LocalDateTime.now(),
@@ -20,7 +20,7 @@ internal class ActivityTest {
     }
 
     @Test
-    fun `unfinished activity - isFinished returns false`() {
+    fun `endTime not set - isFinished returns false`() {
         val unfinishedActivity = Activity(
             Category("dummy category"),
             LocalDateTime.now(),
