@@ -2,6 +2,7 @@ package net.eucalypto.timetracker.activitylist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -51,4 +52,9 @@ class ActivityViewHolder(val binding: ActivityListItemBinding) :
         }
     }
 
+}
+
+@BindingAdapter("activityList")
+fun bindActivityList(view: RecyclerView, activityList: List<Activity>?) {
+    (view.adapter as ActivityAdapter).submitList(activityList)
 }
