@@ -1,13 +1,17 @@
 package net.eucalypto.timetracker.data.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 import net.eucalypto.timetracker.data.database.entities.DatabaseActivity
 
 @Dao
 interface DatabaseActivityDao {
 
-    @Query("SELECT * FROM activities")
+    @Query("SELECT * FROM activities ORDER BY id DESC")
     fun getActivitiesAsLiveData(): LiveData<List<DatabaseActivity>>
 
     @Query("SELECT * FROM activities ORDER BY id DESC LIMIT 1")
