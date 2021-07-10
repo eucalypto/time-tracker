@@ -1,7 +1,7 @@
-package net.eucalypto.timetracker.data.database
+package net.eucalypto.timetracker.data.database.entities
 
 import androidx.room.TypeConverter
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import java.util.*
 
 
@@ -18,12 +18,12 @@ class RoomTypeConverters {
     }
 
     @TypeConverter
-    fun fromLocalDateTime(dateTime: LocalDateTime): String {
+    fun fromLocalDateTime(dateTime: ZonedDateTime): String {
         return dateTime.toString()
     }
 
     @TypeConverter
-    fun toLocalDateTime(dateTimeString: String): LocalDateTime {
-        return LocalDateTime.parse(dateTimeString)
+    fun toLocalDateTime(dateTimeString: String): ZonedDateTime {
+        return ZonedDateTime.parse(dateTimeString)
     }
 }

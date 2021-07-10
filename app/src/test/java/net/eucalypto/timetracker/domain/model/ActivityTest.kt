@@ -2,7 +2,7 @@ package net.eucalypto.timetracker.domain.model
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 internal class ActivityTest {
 
@@ -10,8 +10,8 @@ internal class ActivityTest {
     fun `endTime set - isFinished returns true`() {
         val finishedActivity = Activity(
             Category("dummy category"),
-            LocalDateTime.now(),
-            LocalDateTime.now()
+            ZonedDateTime.now(),
+            ZonedDateTime.now()
         )
 
         val isFinished = finishedActivity.isFinished()
@@ -23,7 +23,7 @@ internal class ActivityTest {
     fun `endTime not set - isFinished returns false`() {
         val unfinishedActivity = Activity(
             Category("dummy category"),
-            LocalDateTime.now(),
+            ZonedDateTime.now(),
             NOT_SET_YET
         )
 

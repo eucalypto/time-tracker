@@ -14,7 +14,7 @@ import net.eucalypto.timetracker.domain.model.Activity
 import net.eucalypto.timetracker.domain.model.Category
 import net.eucalypto.timetracker.domain.model.NOT_SET_YET
 import timber.log.Timber
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import java.util.*
 
 
@@ -34,7 +34,7 @@ class ReadNfcWorker(
     private lateinit var categoryFromNfc: Category
     private lateinit var scenario: Scenario
     private lateinit var lastActivity: Activity
-    private lateinit var timestamp: LocalDateTime
+    private lateinit var timestamp: ZonedDateTime
 
 
     override suspend fun doWork(): Result {
@@ -50,7 +50,7 @@ class ReadNfcWorker(
             return Result.failure()
         }
 
-        timestamp = LocalDateTime.parse(inputData.getString(TIMESTAMP_STRING_KEY))
+        timestamp = ZonedDateTime.parse(inputData.getString(TIMESTAMP_STRING_KEY))
 
         repository.getLastActivity()?.let {
             lastActivity = it

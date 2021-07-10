@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import net.eucalypto.timetracker.data.database.entities.DatabaseActivity
 import net.eucalypto.timetracker.data.database.entities.DatabaseCategory
+import net.eucalypto.timetracker.data.database.entities.RoomTypeConverters
 
 @Database(entities = [DatabaseCategory::class, DatabaseActivity::class], version = 1)
 @TypeConverters(RoomTypeConverters::class)

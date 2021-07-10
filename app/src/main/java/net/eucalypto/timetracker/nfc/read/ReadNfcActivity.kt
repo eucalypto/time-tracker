@@ -9,7 +9,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import timber.log.Timber
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 class ReadNfcActivity : Activity() {
 
@@ -24,7 +24,7 @@ class ReadNfcActivity : Activity() {
         val payload = message.records.first().payload
         val text = String(payload)
 
-        val timestamp = LocalDateTime.now().toString()
+        val timestamp = ZonedDateTime.now().toString()
 
         val inputData = Data.Builder()
             .putString(ReadNfcWorker.CATEGORY_ID_KEY, text)
