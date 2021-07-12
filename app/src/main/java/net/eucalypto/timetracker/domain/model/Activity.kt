@@ -1,9 +1,9 @@
 package net.eucalypto.timetracker.domain.model
 
+import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 
 data class Activity(
@@ -12,15 +12,17 @@ data class Activity(
     var endTime: ZonedDateTime = NOT_SET_YET,
     val id: Long = 0,
 ) {
+    val duration: Duration
+        get() {
+            if (!isFinished()) {
+                return Duration.ZERO
+            }
+            return Duration.between(startTime, endTime)
+        }
+
     fun isFinished(): Boolean {
         return endTime != NOT_SET_YET
     }
 }
 
 val NOT_SET_YET: ZonedDateTime = ZonedDateTime.ofInstant(Instant.EPOCH, ZoneId.systemDefault())
-
-
-fun ZonedDateTime.asCustomFormatString(): String {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm") // e.g. 2021-10-07 21:43
-    return this.format(formatter)
-}
