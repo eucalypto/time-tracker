@@ -27,12 +27,10 @@ enum class Scenario {
 class ReadNfcWorker(
     appContext: Context,
     params: WorkerParameters,
-) :
-    CoroutineWorker(appContext, params) {
+) : CoroutineWorker(appContext, params) {
 
     private val repository = getRepository(applicationContext)
     private lateinit var categoryFromNfc: Category
-    private lateinit var scenario: Scenario
     private lateinit var lastActivity: Activity
     private lateinit var timestamp: ZonedDateTime
 
@@ -41,23 +39,18 @@ class ReadNfcWorker(
         Timber.d("NFC event triggered")
 
         val categoryId = UUID.fromString(inputData.getString(CATEGORY_ID_KEY))
-
-        repository.getCategoryById(categoryId)?.let {
-            categoryFromNfc = it
-        } ?: run {
-            val message = applicationContext.getString(R.string.read_nfc_toast_unknown_activity)
-            displayToast(message)
-            return Result.failure()
-        }
-
+        categoryFromNfc = repository.getCategoryById(categoryId)
+            ?: run {
+                displayToast(applicationContext.getString(R.string.read_nfc_toast_unknown_activity))
+                return Result.failure()
+            }
         timestamp = ZonedDateTime.parse(inputData.getString(TIMESTAMP_STRING_KEY))
 
         repository.getLastActivity()?.let {
             lastActivity = it
         }
-        scenario = determineScenario()
 
-        when (scenario) {
+        when (determineScenario()) {
             Scenario.NO_UNFINISHED_ACTIVITY -> {
                 val newActivityName = createAndInsertNewActivity()
                 val message =
