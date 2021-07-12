@@ -91,10 +91,8 @@ class ReadNfcWorker(
     }
 
 
-    private suspend fun finishLastActivity(): String {
-        lastActivity.endTime = timestamp
-        repository.update(lastActivity)
-        return lastActivity.category.name
+    private suspend fun finishLastActivity() {
+        repository.update(lastActivity.withEndTime(timestamp))
     }
 
     private suspend fun createAndInsertNewActivity(): String {

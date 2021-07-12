@@ -9,7 +9,7 @@ import java.time.ZonedDateTime
 data class Activity(
     val category: Category,
     val startTime: ZonedDateTime = ZonedDateTime.now(),
-    var endTime: ZonedDateTime = NOT_SET_YET,
+    val endTime: ZonedDateTime = NOT_SET_YET,
     val id: Long = 0,
 ) {
     val duration: Duration
@@ -22,6 +22,10 @@ data class Activity(
 
     fun isFinished(): Boolean {
         return endTime != NOT_SET_YET
+    }
+
+    fun withEndTime(endTime: ZonedDateTime): Activity {
+        return Activity(category, startTime, endTime, id)
     }
 }
 
