@@ -35,7 +35,6 @@ private constructor(private val binding: CategoryListItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     lateinit var category: Category
-    private val context = binding.root.context
 
     fun bind(
         category: Category,
@@ -70,7 +69,7 @@ private constructor(private val binding: CategoryListItemBinding) :
         onWriteNfcClicked: (Category) -> Unit,
         onDeleteClicked: (Category) -> Unit
     ) {
-        val menu = PopupMenu(context, it)
+        val menu = PopupMenu(it.context, it)
         menu.inflate(R.menu.category_list_item_popup_menu)
         menu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {

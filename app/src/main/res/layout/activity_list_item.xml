@@ -29,7 +29,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Coding Something Long" />
+                tools:text="Coding Something Amazing" />
 
             <TextView
                 android:id="@+id/start_time_label"
@@ -76,7 +76,7 @@
                 app:duration="@{activity.duration}"
                 app:layout_constraintStart_toEndOf="@+id/duration_label"
                 app:layout_constraintTop_toTopOf="@+id/duration_label"
-                tools:text="2 hours" />
+                tools:text="0:12:37" />
 
             <TextView
                 android:id="@+id/end_time_label"

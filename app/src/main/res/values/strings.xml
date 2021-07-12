@@ -36,4 +36,6 @@
     <string name="start_time_label">Start:</string>
     <string name="end_time_label">End:</string>
     <string name="duration_label">Duration:</string>
+    <string name="activity_list_dialog_delete_title">Delete this activity?</string>
+    <string name="activity_list_dialog_delete_message">Do you really want to delete this activity entry?</string>
 </resources>

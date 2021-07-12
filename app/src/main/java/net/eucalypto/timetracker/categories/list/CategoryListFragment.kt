@@ -94,7 +94,7 @@ class CategoryListFragment : Fragment() {
                 }
             }
             .setView(inputBinding.root)
-            .create().show()
+            .show()
     }
 
     private fun showDeleteConfirmationDialog(category: Category) {

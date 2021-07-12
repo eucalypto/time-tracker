@@ -90,6 +90,10 @@ class Repository(
     suspend fun delete(activities: List<Activity>) {
         activityDao.delete(activities.map { it.asDataBaseModel() })
     }
+
+    suspend fun delete(activity: Activity) {
+        activityDao.delete(listOf(activity.asDataBaseModel()))
+    }
 }
 
 private lateinit var INSTANCE: Repository

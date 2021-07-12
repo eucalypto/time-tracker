@@ -3,13 +3,18 @@ package net.eucalypto.timetracker.activitylist
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import net.eucalypto.timetracker.data.Repository
 import net.eucalypto.timetracker.domain.model.Activity
 
-class ActivityListViewModel(repository: Repository) : ViewModel() {
+class ActivityListViewModel(private val repository: Repository) : ViewModel() {
 
     val activityList: LiveData<List<Activity>> = repository.getActivitiesAsLiveData()
 
+    fun delete(activity: Activity) = viewModelScope.launch {
+        repository.delete(activity)
+    }
 }
 
 
