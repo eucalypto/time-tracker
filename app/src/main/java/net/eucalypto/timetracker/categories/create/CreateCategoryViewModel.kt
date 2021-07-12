@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.categories.editcreate
+package net.eucalypto.timetracker.categories.create
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
@@ -6,11 +6,10 @@ import net.eucalypto.timetracker.data.Repository
 import net.eucalypto.timetracker.domain.model.Category
 import java.util.*
 
-class EditCategoryViewModel(
+class CreateCategoryViewModel(
     private val repo: Repository,
     private val category: Category
-) :
-    ViewModel() {
+) : ViewModel() {
 
     val categoryName = MutableLiveData(category.name)
 
@@ -36,12 +35,12 @@ class EditCategoryViewModel(
         ViewModelProvider.Factory {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (!modelClass.isAssignableFrom(EditCategoryViewModel::class.java)) {
+            if (!modelClass.isAssignableFrom(CreateCategoryViewModel::class.java)) {
                 throw IllegalArgumentException("Unknown class: ${modelClass.name}")
             }
 
             @Suppress("unchecked_cast")
-            return EditCategoryViewModel(repository, category) as T
+            return CreateCategoryViewModel(repository, category) as T
         }
 
     }

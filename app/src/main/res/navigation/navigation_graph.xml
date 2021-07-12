@@ -30,16 +30,16 @@
 
     <fragment
         android:id="@+id/editCategoryFragment"
-        android:name="net.eucalypto.timetracker.categories.editcreate.EditCategoryFragment"
+        android:name="net.eucalypto.timetracker.categories.create.CreateCategoryFragment"
         android:label="EditCategoryFragment"
-        tools:layout="@layout/edit_category_fragment">
+        tools:layout="@layout/create_category_fragment">
         <argument
             android:name="categoryParcel"
             app:argType="net.eucalypto.timetracker.domain.model.util.CategoryParcel" />
     </fragment>
     <fragment
         android:id="@+id/activityListFragment"
-        android:name="net.eucalypto.timetracker.activitylist.ActivityListFragment"
+        android:name="net.eucalypto.timetracker.activities.ActivityListFragment"
         android:label="@string/activity_list_fragment_title"
         tools:layout="@layout/activity_list_fragment">
         <action

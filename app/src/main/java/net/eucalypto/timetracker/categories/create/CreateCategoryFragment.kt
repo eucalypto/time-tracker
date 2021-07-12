@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.categories.editcreate
+package net.eucalypto.timetracker.categories.create
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,17 +9,17 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import net.eucalypto.timetracker.data.Repository
 import net.eucalypto.timetracker.data.database.getDatabase
-import net.eucalypto.timetracker.databinding.EditCategoryFragmentBinding
+import net.eucalypto.timetracker.databinding.CreateCategoryFragmentBinding
 import net.eucalypto.timetracker.domain.model.util.asCategory
 
-class EditCategoryFragment : Fragment() {
+class CreateCategoryFragment : Fragment() {
 
-    private val args: EditCategoryFragmentArgs by navArgs()
+    private val args: CreateCategoryFragmentArgs by navArgs()
 
-    private val viewModel: EditCategoryViewModel by viewModels {
+    private val viewModel: CreateCategoryViewModel by viewModels {
         val database = getDatabase(requireContext().applicationContext)
         val repository = Repository(database)
-        EditCategoryViewModel.Factory(repository, args.categoryParcel.asCategory())
+        CreateCategoryViewModel.Factory(repository, args.categoryParcel.asCategory())
     }
 
     override fun onCreateView(
@@ -27,7 +27,7 @@ class EditCategoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = EditCategoryFragmentBinding.inflate(inflater, container, false)
+        val binding = CreateCategoryFragmentBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root

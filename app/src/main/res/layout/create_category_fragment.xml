@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="net.eucalypto.timetracker.categories.editcreate.EditCategoryViewModel" />
+            type="net.eucalypto.timetracker.categories.create.CreateCategoryViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

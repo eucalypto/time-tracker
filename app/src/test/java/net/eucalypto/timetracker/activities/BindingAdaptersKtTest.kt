@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.activitylist
+package net.eucalypto.timetracker.activities
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
