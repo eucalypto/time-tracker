@@ -7,8 +7,6 @@ import androidx.work.WorkerParameters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.eucalypto.timetracker.R
-import net.eucalypto.timetracker.data.database.entities.asDomainModel
-import net.eucalypto.timetracker.data.database.getDatabase
 import net.eucalypto.timetracker.data.getRepository
 import net.eucalypto.timetracker.domain.model.Activity
 import net.eucalypto.timetracker.domain.model.Category
@@ -31,12 +29,14 @@ class ReadNfcWorker(
 
     private val repository = getRepository(applicationContext)
     private lateinit var categoryFromNfc: Category
-    private lateinit var lastActivity: Activity
     private lateinit var timestamp: ZonedDateTime
+    private var lastActivity: Activity? = null
 
 
     override suspend fun doWork(): Result {
         Timber.d("NFC event triggered")
+
+        timestamp = ZonedDateTime.parse(inputData.getString(TIMESTAMP_STRING_KEY))
 
         val categoryId = UUID.fromString(inputData.getString(CATEGORY_ID_KEY))
         categoryFromNfc = repository.getCategoryById(categoryId)
@@ -44,68 +44,71 @@ class ReadNfcWorker(
                 displayToast(applicationContext.getString(R.string.read_nfc_toast_unknown_activity))
                 return Result.failure()
             }
-        timestamp = ZonedDateTime.parse(inputData.getString(TIMESTAMP_STRING_KEY))
+        lastActivity = repository.getLastActivity()
 
-        repository.getLastActivity()?.let {
-            lastActivity = it
-        }
-
-        when (determineScenario()) {
+        when (determineScenario(lastActivity, categoryFromNfc)) {
             Scenario.NO_UNFINISHED_ACTIVITY -> {
-                val newActivityName = createAndInsertNewActivity()
-                val message =
-                    applicationContext.getString(
-                        R.string.read_nfc_toast_start_new_activity,
-                        newActivityName
-                    )
-                displayToast(message)
+                createAndInsertNewActivity(categoryFromNfc, startTime = timestamp)
+                displayMessageStartActivity()
             }
             Scenario.UNFINISHED_ACTIVITY_SAME_AS_TAG -> {
                 finishLastActivity()
-                val message = applicationContext.getString(
-                    R.string.read_nfc_toast_finish_last_activity,
-                    lastActivity.category.name
-                )
-                displayToast(message)
+                displayMessageFinishActivity()
             }
             Scenario.UNFINISHED_ACTIVITY_DIFFERENT_FROM_TAG -> {
                 finishLastActivity()
-                val newActivityName = createAndInsertNewActivity()
-                val message = applicationContext.getString(
-                    R.string.read_nfc_toast_finish_last_activity_and_start_new_one,
-                    lastActivity.category.name,
-                    newActivityName
-                )
-                displayToast(message)
+                createAndInsertNewActivity(categoryFromNfc, startTime = timestamp)
+                displayMessageFinishLastStartNewActivity()
             }
         }
 
         return Result.success()
     }
 
-
-    private suspend fun finishLastActivity() {
-        repository.update(lastActivity.withEndTime(timestamp))
+    private suspend fun displayMessageStartActivity() {
+        val message =
+            applicationContext.getString(
+                R.string.read_nfc_toast_start_new_activity,
+                categoryFromNfc.name
+            )
+        displayToast(message)
     }
 
-    private suspend fun createAndInsertNewActivity(): String {
+    private suspend fun displayMessageFinishActivity() {
+        val message = applicationContext.getString(
+            R.string.read_nfc_toast_finish_last_activity,
+            lastActivity!!.category.name
+        )
+        displayToast(message)
+    }
+
+    private suspend fun displayMessageFinishLastStartNewActivity() {
+        val message = applicationContext.getString(
+            R.string.read_nfc_toast_finish_last_activity_and_start_new_one,
+            lastActivity!!.category.name,
+            categoryFromNfc.name
+        )
+        displayToast(message)
+    }
+
+
+    private suspend fun finishLastActivity() {
+        repository.update(lastActivity!!.withEndTime(timestamp))
+    }
+
+    private suspend fun createAndInsertNewActivity(
+        categoryFromNfc: Category,
+        startTime: ZonedDateTime
+    ) {
+
         val newActivity = Activity(
             categoryFromNfc,
-            timestamp,
+            startTime,
             NOT_SET_YET
         )
         repository.insert(newActivity)
-        return newActivity.category.name
     }
 
-    private fun determineScenario() =
-        if (!::lastActivity.isInitialized || lastActivity.isFinished()) {
-            Scenario.NO_UNFINISHED_ACTIVITY
-        } else if (lastActivity.category == categoryFromNfc) {
-            Scenario.UNFINISHED_ACTIVITY_SAME_AS_TAG
-        } else {
-            Scenario.UNFINISHED_ACTIVITY_DIFFERENT_FROM_TAG
-        }
 
     private suspend fun displayToast(message: String) {
         withContext(Dispatchers.Main) {
@@ -113,14 +116,20 @@ class ReadNfcWorker(
         }
     }
 
-    private suspend fun getCategoryById(categoryId: UUID): Category? {
-        val categoryDao = getDatabase(applicationContext).categoryDao
-        return categoryDao.byId(categoryId)?.asDomainModel()
-    }
-
     companion object {
         const val WORK_NAME = "net.eucalypto.timetracker.ReadNfcWorker"
         const val CATEGORY_ID_KEY = "category_id_key"
         const val TIMESTAMP_STRING_KEY = "timestamp_string_key"
+    }
+}
+
+
+private fun determineScenario(lastActivity: Activity?, categoryFromNfc: Category): Scenario {
+    return if (lastActivity == null || lastActivity.isFinished()) {
+        Scenario.NO_UNFINISHED_ACTIVITY
+    } else if (lastActivity.category == categoryFromNfc) {
+        Scenario.UNFINISHED_ACTIVITY_SAME_AS_TAG
+    } else {
+        Scenario.UNFINISHED_ACTIVITY_DIFFERENT_FROM_TAG
     }
 }
