@@ -16,7 +16,7 @@ import java.time.ZonedDateTime
 import java.util.*
 
 
-enum class Scenario {
+internal enum class Scenario {
     NO_UNFINISHED_ACTIVITY,
     UNFINISHED_ACTIVITY_SAME_AS_TAG,
     UNFINISHED_ACTIVITY_DIFFERENT_FROM_TAG
@@ -124,10 +124,10 @@ class ReadNfcWorker(
 }
 
 
-private fun determineScenario(lastActivity: Activity?, categoryFromNfc: Category): Scenario {
+internal fun determineScenario(lastActivity: Activity?, categoryFromNfc: Category): Scenario {
     return if (lastActivity == null || lastActivity.isFinished()) {
         Scenario.NO_UNFINISHED_ACTIVITY
-    } else if (lastActivity.category == categoryFromNfc) {
+    } else if (lastActivity.category.id == categoryFromNfc.id) {
         Scenario.UNFINISHED_ACTIVITY_SAME_AS_TAG
     } else {
         Scenario.UNFINISHED_ACTIVITY_DIFFERENT_FROM_TAG
