@@ -12,6 +12,11 @@ data class Activity(
     val endTime: ZonedDateTime = NOT_SET_YET,
     val id: Long = 0,
 ) {
+    init {
+        val endTimeIsSetAndBeforeStartTime = endTime != NOT_SET_YET && endTime < startTime
+        if (endTimeIsSetAndBeforeStartTime) throw ActivityTimeException()
+    }
+
     val duration: Duration
         get() {
             if (!isFinished()) {
@@ -30,3 +35,5 @@ data class Activity(
 }
 
 val NOT_SET_YET: ZonedDateTime = ZonedDateTime.ofInstant(Instant.EPOCH, ZoneId.systemDefault())
+
+class ActivityTimeException : IllegalArgumentException()
