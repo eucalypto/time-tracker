@@ -11,7 +11,10 @@ import net.eucalypto.timetracker.R
 import net.eucalypto.timetracker.databinding.ActivityListItemBinding
 import net.eucalypto.timetracker.domain.model.Activity
 
-class ActivityAdapter(private val onDeleteClicked: (Activity) -> Unit) :
+class ActivityAdapter(
+    private val onDeleteClicked: (Activity) -> Unit,
+    private val onEditEndTimeClicked: (Activity) -> Unit
+) :
     ListAdapter<Activity, ActivityViewHolder>(ActivityDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
@@ -19,7 +22,7 @@ class ActivityAdapter(private val onDeleteClicked: (Activity) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
-        holder.bindTo(getItem(position), onDeleteClicked)
+        holder.bindTo(getItem(position), onDeleteClicked, onEditEndTimeClicked)
     }
 
 }
@@ -41,21 +44,38 @@ class ActivityViewHolder(val binding: ActivityListItemBinding) :
 
     private lateinit var activity: Activity
 
-    fun bindTo(item: Activity, onDeleteClicked: (Activity) -> Unit) {
+    fun bindTo(
+        item: Activity,
+        onDeleteClicked: (Activity) -> Unit,
+        onEditEndTimeClicked: (Activity) -> Unit
+    ) {
         activity = item
         binding.activity = item
         binding.activityContextButton.setOnClickListener {
-            showContextMenu(it, onDeleteClicked)
+            showContextMenu(it, onDeleteClicked, onEditEndTimeClicked)
+        }
+        binding.root.setOnLongClickListener {
+            showContextMenu(binding.activityContextButton, onDeleteClicked, onEditEndTimeClicked)
+            true
         }
     }
 
-    private fun showContextMenu(view: View, onDeleteClicked: (Activity) -> Unit) {
+    private fun showContextMenu(
+        view: View,
+        onDeleteClicked: (Activity) -> Unit,
+        onEditEndTimeClicked: (Activity) -> Unit
+    ) {
+
         PopupMenu(view.context, view).apply {
             inflate(R.menu.activity_list_item_popup_menu)
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.menu_item_delete -> {
                         onDeleteClicked(activity)
+                        true
+                    }
+                    R.id.menu_item_edit_end_time -> {
+                        onEditEndTimeClicked(activity)
                         true
                     }
                     else -> {

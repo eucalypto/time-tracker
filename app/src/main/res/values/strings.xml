@@ -38,4 +38,9 @@
     <string name="duration_label">Duration:</string>
     <string name="activity_list_dialog_delete_title">Delete this activity?</string>
     <string name="activity_list_dialog_delete_message">Do you really want to delete this activity entry?</string>
+    <string name="activity_edit_dialog_end_time_before_start_time">Activity not updated. End time must be after start time.</string>
+    <string name="retry_button">Retry</string>
+    <string name="ok_button">OK</string>
+    <string name="activity_edit_dialog_end_time_title">Set new End Time</string>
+    <string name="menu_item_edit_end_time">Edit End Time</string>
 </resources>

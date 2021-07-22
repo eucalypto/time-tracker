@@ -15,6 +15,10 @@ class ActivityListViewModel(private val repository: Repository) : ViewModel() {
     fun delete(activity: Activity) = viewModelScope.launch {
         repository.delete(activity)
     }
+
+    fun update(activity: Activity) = viewModelScope.launch {
+        repository.update(activity)
+    }
 }
 
 
