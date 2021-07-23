@@ -17,6 +17,7 @@ import net.eucalypto.timetracker.R
 import net.eucalypto.timetracker.data.getRepository
 import net.eucalypto.timetracker.databinding.ActivityListFragmentBinding
 import net.eucalypto.timetracker.domain.model.Activity
+import net.eucalypto.timetracker.domain.model.ActivityFutureTimeException
 import net.eucalypto.timetracker.domain.model.ActivityTimeLineException
 
 class ActivityListFragment : Fragment() {
@@ -63,8 +64,11 @@ class ActivityListFragment : Fragment() {
                 val updatedActivity = activity.withStartTime(startTime)
                 viewModel.update(updatedActivity)
             } catch (_: ActivityTimeLineException) {
-                showTimeExceptionSnackbar()
+                showTimeLineExceptionSnackbar()
+            } catch (_: ActivityFutureTimeException) {
+                showFutureTimeExceptionSnackbar()
             }
+
         }.show(parentFragmentManager, "startTimePicker")
     }
 
@@ -75,12 +79,25 @@ class ActivityListFragment : Fragment() {
                 val updatedActivity = activity.withEndTime(newEndTime)
                 viewModel.update(updatedActivity)
             } catch (_: ActivityTimeLineException) {
-                showTimeExceptionSnackbar()
+                showTimeLineExceptionSnackbar()
+            } catch (_: ActivityFutureTimeException) {
+                showFutureTimeExceptionSnackbar()
             }
         }.show(parentFragmentManager, "endTimePicker")
     }
 
-    private fun showTimeExceptionSnackbar() {
+    private fun showFutureTimeExceptionSnackbar() {
+        Snackbar
+            .make(
+                binding.root,
+                R.string.activity_edit_dialog_start_or_end_time_in_the_future,
+                Snackbar.LENGTH_INDEFINITE
+            )
+            .setAction(R.string.ok_button) {}
+            .show()
+    }
+
+    private fun showTimeLineExceptionSnackbar() {
         Snackbar
             .make(
                 binding.root,

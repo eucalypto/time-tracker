@@ -45,4 +45,5 @@
     <string name="menu_item_edit_end_time">Edit End Time</string>
     <string name="menu_item_edit_start_time">Edit Start Time</string>
     <string name="activity_edit_dialog_start_time_title">Set new Start Time</string>
+    <string name="activity_edit_dialog_start_or_end_time_in_the_future">Please don\'t enter a future time.</string>
 </resources>
