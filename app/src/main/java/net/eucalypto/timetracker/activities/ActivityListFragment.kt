@@ -19,6 +19,7 @@ import net.eucalypto.timetracker.databinding.ActivityListFragmentBinding
 import net.eucalypto.timetracker.domain.model.Activity
 import net.eucalypto.timetracker.domain.model.ActivityFutureTimeException
 import net.eucalypto.timetracker.domain.model.ActivityTimeLineException
+import java.time.ZonedDateTime
 
 class ActivityListFragment : Fragment() {
 
@@ -58,50 +59,53 @@ class ActivityListFragment : Fragment() {
     }
 
     private fun showStartTimeChooserDialog(activity: Activity) {
-        StartTimePickerFragment(activity) { _: TimePicker?, hourOfDay: Int, minute: Int ->
+        TimePickerFragment(
+            activity.startTime,
+            R.string.activity_edit_dialog_start_time_title
+        ) { _: TimePicker?, hourOfDay: Int, minute: Int ->
+
             val startTime = activity.startTime.withHour(hourOfDay).withMinute(minute).withSecond(0)
-            try {
-                val updatedActivity = activity.withStartTime(startTime)
-                viewModel.update(updatedActivity)
-            } catch (_: ActivityTimeLineException) {
-                showTimeLineExceptionSnackbar()
-            } catch (_: ActivityFutureTimeException) {
-                showFutureTimeExceptionSnackbar()
-            }
+            tryUpdateActivity { activity.withStartTime(startTime) }
 
         }.show(parentFragmentManager, "startTimePicker")
     }
 
     private fun showEndTimeChooserDialog(activity: Activity) {
-        EndTimePickerFragment(activity) { view: TimePicker?, hourOfDay: Int, minute: Int ->
+        TimePickerFragment(
+            activity.endTime,
+            R.string.activity_edit_dialog_end_time_title
+        ) { view: TimePicker?, hourOfDay: Int, minute: Int ->
+
             val newEndTime = activity.endTime.withHour(hourOfDay).withMinute(minute).withSecond(0)
-            try {
-                val updatedActivity = activity.withEndTime(newEndTime)
-                viewModel.update(updatedActivity)
-            } catch (_: ActivityTimeLineException) {
-                showTimeLineExceptionSnackbar()
-            } catch (_: ActivityFutureTimeException) {
-                showFutureTimeExceptionSnackbar()
-            }
+            tryUpdateActivity { activity.withEndTime(newEndTime) }
+
         }.show(parentFragmentManager, "endTimePicker")
     }
 
+    private fun tryUpdateActivity(getActivity: () -> Activity) {
+        try {
+            val updatedActivity = getActivity()
+            viewModel.update(updatedActivity)
+        } catch (_: ActivityTimeLineException) {
+            showTimeLineExceptionSnackbar()
+        } catch (_: ActivityFutureTimeException) {
+            showFutureTimeExceptionSnackbar()
+        }
+    }
+
     private fun showFutureTimeExceptionSnackbar() {
-        Snackbar
-            .make(
-                binding.root,
-                R.string.activity_edit_dialog_start_or_end_time_in_the_future,
-                Snackbar.LENGTH_INDEFINITE
-            )
-            .setAction(R.string.ok_button) {}
-            .show()
+        showSnackbarWithText(R.string.activity_edit_dialog_start_or_end_time_in_the_future)
     }
 
     private fun showTimeLineExceptionSnackbar() {
+        showSnackbarWithText(R.string.activity_edit_dialog_end_time_before_start_time)
+    }
+
+    private fun showSnackbarWithText(resId: Int) {
         Snackbar
             .make(
                 binding.root,
-                R.string.activity_edit_dialog_end_time_before_start_time,
+                resId,
                 Snackbar.LENGTH_INDEFINITE
             )
             .setAction(R.string.ok_button) {}
@@ -121,35 +125,15 @@ class ActivityListFragment : Fragment() {
 
 }
 
-class EndTimePickerFragment(
-    private val activityToEdit: Activity, private val onTimeSet: TimePickerDialog.OnTimeSetListener
-) : DialogFragment() {
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val hour = activityToEdit.endTime.hour
-        val minute = activityToEdit.endTime.minute
-        val is24hoursView = true
-
-        return TimePickerDialog(
-            activity,
-            onTimeSet,
-            hour,
-            minute,
-            is24hoursView
-        ).apply {
-            setTitle(R.string.activity_edit_dialog_end_time_title)
-        }
-    }
-}
-
-class StartTimePickerFragment(
-    private val activityToEdit: Activity,
+class TimePickerFragment(
+    private val timeToDisplay: ZonedDateTime,
+    private val titleId: Int,
     private val onTimeSet: TimePickerDialog.OnTimeSetListener
 ) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val hour = activityToEdit.startTime.hour
-        val minute = activityToEdit.startTime.minute
+        val hour = timeToDisplay.hour
+        val minute = timeToDisplay.minute
         val is24hoursView = true
 
         return TimePickerDialog(
@@ -159,7 +143,7 @@ class StartTimePickerFragment(
             minute,
             is24hoursView
         ).apply {
-            setTitle(R.string.activity_edit_dialog_start_time_title)
+            setTitle(titleId)
         }
     }
 }
