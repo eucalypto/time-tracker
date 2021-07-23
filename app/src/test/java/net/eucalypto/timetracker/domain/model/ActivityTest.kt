@@ -28,8 +28,8 @@ internal class ActivityTest {
         @Test
         fun `returns 1 hour for end time one hour after start time`() {
             val now = ZonedDateTime.now()
-            val inOneHour = now + Duration.ofHours(1)
-            val activity = Activity(Category("ignore"), now, inOneHour)
+            val oneHourAgo = now.minusHours(1)
+            val activity = Activity(Category("ignore"), oneHourAgo, now)
 
             val duration = activity.duration
 
@@ -39,8 +39,8 @@ internal class ActivityTest {
         @Test
         fun `returns 42 seconds end time 42 seconds after start time`() {
             val now = ZonedDateTime.now()
-            val in42Seconds = now + Duration.ofSeconds(42)
-            val activity = Activity(Category("ignore"), now, in42Seconds)
+            val fourtyTwoSecondsAgo = now.minusSeconds(42)
+            val activity = Activity(Category("ignore"), fourtyTwoSecondsAgo, now)
 
             val duration = activity.duration
 
@@ -80,7 +80,7 @@ internal class ActivityTest {
         val now = ZonedDateTime.now()
         val validActivity = Activity(Category("ignore"), now)
 
-        assertThrows<ActivityTimeException> {
+        assertThrows<ActivityTimeLineException> {
             validActivity.withEndTime(now.minusSeconds(1))
         }
     }
@@ -100,12 +100,30 @@ internal class ActivityTest {
         }
     }
 
-    @Test
-    fun `constructor throws ActivityTimeException for end Time one Second before startTime`() {
-        val now = ZonedDateTime.now()
+    @Nested
+    inner class constructor() {
 
-        assertThrows<ActivityTimeException> {
-            Activity(Category("ignore"), now, now.minusSeconds(1))
+        @Test
+        fun `throws ActivityFutureTimeException for start or end times being set in the future`() {
+            val now = ZonedDateTime.now()
+            val inOneHour = now.plusHours(1)
+
+            assertThrows<ActivityFutureTimeException> {
+                Activity(Category("ignore"), now, inOneHour)
+            }
+
+            assertThrows<ActivityFutureTimeException> {
+                Activity(Category("ignore"), inOneHour)
+            }
+        }
+
+        @Test
+        fun `throws ActivityTimeLineException for end Time one Second before startTime`() {
+            val now = ZonedDateTime.now()
+
+            assertThrows<ActivityTimeLineException> {
+                Activity(Category("ignore"), now, now.minusSeconds(1))
+            }
         }
     }
 }

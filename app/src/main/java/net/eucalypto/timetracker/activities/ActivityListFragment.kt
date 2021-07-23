@@ -17,7 +17,7 @@ import net.eucalypto.timetracker.R
 import net.eucalypto.timetracker.data.getRepository
 import net.eucalypto.timetracker.databinding.ActivityListFragmentBinding
 import net.eucalypto.timetracker.domain.model.Activity
-import net.eucalypto.timetracker.domain.model.ActivityTimeException
+import net.eucalypto.timetracker.domain.model.ActivityTimeLineException
 
 class ActivityListFragment : Fragment() {
 
@@ -62,7 +62,7 @@ class ActivityListFragment : Fragment() {
             try {
                 val updatedActivity = activity.withStartTime(startTime)
                 viewModel.update(updatedActivity)
-            } catch (_: ActivityTimeException) {
+            } catch (_: ActivityTimeLineException) {
                 showTimeExceptionSnackbar()
             }
         }.show(parentFragmentManager, "startTimePicker")
@@ -74,7 +74,7 @@ class ActivityListFragment : Fragment() {
             try {
                 val updatedActivity = activity.withEndTime(newEndTime)
                 viewModel.update(updatedActivity)
-            } catch (_: ActivityTimeException) {
+            } catch (_: ActivityTimeLineException) {
                 showTimeExceptionSnackbar()
             }
         }.show(parentFragmentManager, "endTimePicker")

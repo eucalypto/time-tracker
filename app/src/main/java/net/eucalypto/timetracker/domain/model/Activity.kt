@@ -18,7 +18,11 @@ data class Activity(
 
     private fun throwExceptionIfDataCorrupt() {
         val endTimeIsSetAndBeforeStartTime = endTime != NOT_SET_YET && endTime < startTime
-        if (endTimeIsSetAndBeforeStartTime) throw ActivityTimeException()
+        if (endTimeIsSetAndBeforeStartTime) throw ActivityTimeLineException()
+
+        val now = ZonedDateTime.now()
+        val startTimeOrEndTimeInTheFuture = startTime > now || endTime > now
+        if (startTimeOrEndTimeInTheFuture) throw ActivityFutureTimeException()
     }
 
     val duration: Duration
@@ -44,4 +48,5 @@ data class Activity(
 
 val NOT_SET_YET: ZonedDateTime = ZonedDateTime.ofInstant(Instant.EPOCH, ZoneId.systemDefault())
 
-class ActivityTimeException : IllegalArgumentException()
+class ActivityTimeLineException : IllegalArgumentException()
+class ActivityFutureTimeException : IllegalArgumentException()
