@@ -13,6 +13,10 @@ data class Activity(
     val id: Long = 0,
 ) {
     init {
+        throwExceptionIfDataCorrupt()
+    }
+
+    private fun throwExceptionIfDataCorrupt() {
         val endTimeIsSetAndBeforeStartTime = endTime != NOT_SET_YET && endTime < startTime
         if (endTimeIsSetAndBeforeStartTime) throw ActivityTimeException()
     }
@@ -30,6 +34,10 @@ data class Activity(
     }
 
     fun withEndTime(endTime: ZonedDateTime): Activity {
+        return Activity(category, startTime, endTime, id)
+    }
+
+    fun withStartTime(startTime: ZonedDateTime): Activity {
         return Activity(category, startTime, endTime, id)
     }
 }

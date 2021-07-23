@@ -2,6 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/menu_item_edit_start_time"
+        android:title="@string/menu_item_edit_start_time" />
+
+    <item
         android:id="@+id/menu_item_edit_end_time"
         android:title="@string/menu_item_edit_end_time" />
 

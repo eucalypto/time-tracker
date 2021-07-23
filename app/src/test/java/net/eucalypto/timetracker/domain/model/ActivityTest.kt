@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.time.Duration
+import java.time.ZoneId
 import java.time.ZonedDateTime
 
 internal class ActivityTest {
@@ -81,6 +82,21 @@ internal class ActivityTest {
 
         assertThrows<ActivityTimeException> {
             validActivity.withEndTime(now.minusSeconds(1))
+        }
+    }
+
+    @Nested
+    inner class withStartTime() {
+
+        @Test
+        fun `returns Activity with 1 second earlier startTime when given that new startTime`() {
+            val originalStartTime = ZonedDateTime.of(1969, 7, 20, 11, 21, 0, 0, ZoneId.of("Z"))
+            val activity = Activity(Category("ignore"), originalStartTime)
+
+            val updatedActivity = activity.withStartTime(originalStartTime.minusSeconds(1))
+
+            assertThat(updatedActivity.startTime)
+                .isEquivalentAccordingToCompareTo(originalStartTime.minusSeconds(1))
         }
     }
 
