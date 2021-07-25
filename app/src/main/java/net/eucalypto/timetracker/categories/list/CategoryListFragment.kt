@@ -1,13 +1,15 @@
 package net.eucalypto.timetracker.categories.list
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import net.eucalypto.timetracker.R
@@ -19,7 +21,7 @@ import net.eucalypto.timetracker.domain.model.util.asParcel
 
 class CategoryListFragment : Fragment() {
 
-    private val viewModel: CategoryListViewModel by viewModels {
+    private val viewModel: CategoryListViewModel by activityViewModels {
         CategoryListViewModel.Factory(getRepository(requireContext()))
     }
 
@@ -98,7 +100,24 @@ class CategoryListFragment : Fragment() {
     }
 
     private fun showDeleteConfirmationDialog(category: Category) {
-        AlertDialog.Builder(requireContext())
+        viewModel.categoryToDelete = category
+        DeleteCategoryConfirmationDialogFragment().show(
+            childFragmentManager,
+            DeleteCategoryConfirmationDialogFragment.TAG
+        )
+    }
+}
+
+
+class DeleteCategoryConfirmationDialogFragment : DialogFragment() {
+
+    val viewModel: CategoryListViewModel by activityViewModels {
+        CategoryListViewModel.Factory(getRepository(requireContext()))
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val category = viewModel.categoryToDelete
+        return AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.dialog_delete_title, category.name))
             .setMessage(getString(R.string.dialog_delete_message, category.name))
             .setNegativeButton(R.string.dialog_delete_button_cancel, null)
@@ -106,7 +125,9 @@ class CategoryListFragment : Fragment() {
                 viewModel.onDeleteMenuItemClicked(category)
             }
             .create()
-            .show()
     }
 
+    companion object {
+        const val TAG = "DeleteCategoryConfirmationDialogFragment"
+    }
 }

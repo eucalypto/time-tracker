@@ -12,6 +12,7 @@ class CategoryListViewModel(private val repository: Repository) : ViewModel() {
 
     val categoryList: LiveData<List<Category>> = repository.getCategoriesAsLiveData()
 
+    lateinit var categoryToDelete: Category
 
     fun onDeleteMenuItemClicked(category: Category) {
         viewModelScope.launch {
