@@ -12,8 +12,6 @@ class ActivityListViewModel(private val repository: Repository) : ViewModel() {
 
     val activityList: LiveData<List<Activity>> = repository.getActivitiesAsLiveData()
 
-    var selectedActivity: Activity? = null
-
     fun delete(activity: Activity) = viewModelScope.launch {
         repository.delete(activity)
     }
