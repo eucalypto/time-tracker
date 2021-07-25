@@ -7,10 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TimePicker
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import net.eucalypto.timetracker.R
@@ -23,7 +22,7 @@ import java.time.ZonedDateTime
 
 class ActivityListFragment : Fragment() {
 
-    private val viewModel: ActivityListViewModel by viewModels() {
+    private val viewModel: ActivityListViewModel by activityViewModels() {
         ActivityListViewModelFactory(getRepository(requireContext()))
     }
 
@@ -113,14 +112,8 @@ class ActivityListFragment : Fragment() {
     }
 
     private fun showDeleteConfirmationDialog(activity: Activity) {
-        AlertDialog.Builder(requireContext())
-            .setTitle(R.string.activity_list_dialog_delete_title)
-            .setMessage(R.string.activity_list_dialog_delete_message)
-            .setPositiveButton(R.string.dialog_delete_button_delete) { _, _ ->
-                viewModel.delete(activity)
-            }
-            .setNegativeButton(R.string.dialog_delete_button_cancel) { _, _ -> }
-            .show()
+        viewModel.selectedActivity = activity
+        DeleteConfirmationDialogFragment().show(parentFragmentManager, "deleteConfirmationDialog")
     }
 
 }
