@@ -24,7 +24,7 @@ import net.eucalypto.timetracker.domain.model.ActivityTimeLineException
 
 class ActivityListFragment : Fragment() {
 
-    private val viewModel: ActivityListViewModel by viewModels() {
+    private val viewModel: ActivityListViewModel by viewModels {
         ActivityListViewModelFactory(getRepository(requireContext()))
     }
 

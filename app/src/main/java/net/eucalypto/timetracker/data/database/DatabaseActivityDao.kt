@@ -25,6 +25,9 @@ interface DatabaseActivityDao {
     )
     fun getActivitiesAsLiveData(): LiveData<List<DatabaseActivity>>
 
+    @Query("SELECT * FROM activities ORDER BY id DESC")
+    suspend fun getActivities(): List<DatabaseActivity>
+
     @Query("SELECT * FROM activities ORDER BY id DESC LIMIT 1")
     suspend fun getLastActivity(): DatabaseActivity?
 

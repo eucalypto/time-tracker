@@ -54,6 +54,10 @@ class Repository(
             }
         }
 
+    suspend fun getActivities(): List<Activity> {
+        return activityDao.getActivities().asDomainModel(this)
+    }
+
     suspend fun getActivitiesWithCategory(category: Category): List<Activity> {
         return activityDao
             .getActivitiesWithCategory(category.id.toString())
@@ -99,7 +103,7 @@ class Repository(
 private lateinit var INSTANCE: Repository
 
 fun getRepository(context: Context): Repository {
-    if (!::INSTANCE.isInitialized) {
+    if (::INSTANCE.isInitialized.not()) {
         INSTANCE = Repository(getDatabase(context.applicationContext))
     }
 
