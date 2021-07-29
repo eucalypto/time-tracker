@@ -11,12 +11,14 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import net.eucalypto.timetracker.R
 import net.eucalypto.timetracker.data.getRepository
 import net.eucalypto.timetracker.databinding.CategoryEditNameDialogBinding
 import net.eucalypto.timetracker.databinding.CategoryListFragmentBinding
 import net.eucalypto.timetracker.domain.model.Category
+import net.eucalypto.timetracker.domain.model.util.asCategory
 import net.eucalypto.timetracker.domain.model.util.asParcel
 
 class CategoryListFragment : Fragment() {
@@ -45,9 +47,9 @@ class CategoryListFragment : Fragment() {
         setupCategoryRecyclerView(binding)
 
         binding.addCategoryFab.setOnClickListener {
-            val toEditCategory =
-                CategoryListFragmentDirections.actionToEditCategoryFragment(Category().asParcel())
-            findNavController().navigate(toEditCategory)
+            val toCreateCategory =
+                CategoryListFragmentDirections.actionToCreateCategoryFragment(Category().asParcel())
+            findNavController().navigate(toCreateCategory)
         }
     }
 
@@ -71,10 +73,35 @@ class CategoryListFragment : Fragment() {
     }
 
     private fun showEditCategoryDialog(category: Category) {
-        val inflater = requireActivity().layoutInflater
-        val inputBinding = CategoryEditNameDialogBinding.inflate(inflater)
+        val toEditCategory =
+            CategoryListFragmentDirections.actionToEditCategoryDialogFragment(category.asParcel())
+        findNavController().navigate(toEditCategory)
+    }
 
-        AlertDialog.Builder(requireContext())
+    private fun showDeleteConfirmationDialog(category: Category) {
+        viewModel.categoryToDelete = category
+        val toDeleteConfirmationDialog =
+            CategoryListFragmentDirections.actionToDeleteCategoryConfirmationDialogFragment()
+        findNavController().navigate(toDeleteConfirmationDialog)
+    }
+}
+
+
+class EditCategoryDialogFragment : DialogFragment() {
+
+    private val viewModel: CategoryListViewModel by activityViewModels() {
+        CategoryListViewModel.Factory(getRepository(requireContext()))
+    }
+
+    private val args: EditCategoryDialogFragmentArgs by navArgs()
+
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+
+        val inputBinding = CategoryEditNameDialogBinding.inflate(requireActivity().layoutInflater)
+        val category = args.categoryParcel.asCategory()
+
+        return AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.edit_category_name_dialog_title))
             .setMessage(
                 getString(
@@ -96,22 +123,13 @@ class CategoryListFragment : Fragment() {
                 }
             }
             .setView(inputBinding.root)
-            .show()
-    }
-
-    private fun showDeleteConfirmationDialog(category: Category) {
-        viewModel.categoryToDelete = category
-        DeleteCategoryConfirmationDialogFragment().show(
-            childFragmentManager,
-            DeleteCategoryConfirmationDialogFragment.TAG
-        )
+            .create()
     }
 }
 
-
 class DeleteCategoryConfirmationDialogFragment : DialogFragment() {
 
-    val viewModel: CategoryListViewModel by activityViewModels {
+    val viewModel: CategoryListViewModel by activityViewModels() {
         CategoryListViewModel.Factory(getRepository(requireContext()))
     }
 
@@ -125,9 +143,5 @@ class DeleteCategoryConfirmationDialogFragment : DialogFragment() {
                 viewModel.onDeleteMenuItemClicked(category)
             }
             .create()
-    }
-
-    companion object {
-        const val TAG = "DeleteCategoryConfirmationDialogFragment"
     }
 }

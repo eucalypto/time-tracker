@@ -14,8 +14,14 @@
             android:id="@+id/action_to_writeNfcActivity"
             app:destination="@id/writeNfcActivity" />
         <action
-            android:id="@+id/action_to_editCategoryFragment"
-            app:destination="@id/editCategoryFragment" />
+            android:id="@+id/action_to_createCategoryFragment"
+            app:destination="@id/createCategoryFragment" />
+        <action
+            android:id="@+id/action_to_editCategoryDialogFragment"
+            app:destination="@id/editCategoryDialogFragment" />
+        <action
+            android:id="@+id/action_to_deleteCategoryConfirmationDialogFragment"
+            app:destination="@id/deleteCategoryConfirmationDialogFragment" />
     </fragment>
 
     <activity
@@ -29,7 +35,7 @@
     </activity>
 
     <fragment
-        android:id="@+id/editCategoryFragment"
+        android:id="@+id/createCategoryFragment"
         android:name="net.eucalypto.timetracker.categories.create.CreateCategoryFragment"
         android:label="EditCategoryFragment"
         tools:layout="@layout/create_category_fragment">
@@ -51,4 +57,17 @@
         android:name="net.eucalypto.timetracker.about.AboutFragment"
         android:label="@string/about_fragment_navigation_title"
         tools:layout="@layout/about_fragment" />
+    <dialog
+        android:id="@+id/editCategoryDialogFragment"
+        android:name="net.eucalypto.timetracker.categories.list.EditCategoryDialogFragment"
+        android:label="EditCategoryDialogFragment"
+        tools:layout="@layout/category_edit_name_dialog">
+        <argument
+            android:name="categoryParcel"
+            app:argType="net.eucalypto.timetracker.domain.model.util.CategoryParcel" />
+    </dialog>
+    <dialog
+        android:id="@+id/deleteCategoryConfirmationDialogFragment"
+        android:name="net.eucalypto.timetracker.categories.list.DeleteCategoryConfirmationDialogFragment"
+        android:label="DeleteCategoryConfirmationDialogFragment" />
 </navigation>
