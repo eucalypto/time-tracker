@@ -54,9 +54,11 @@ class ActivityListFragment : Fragment() {
 
     private fun setupRecyclerView() {
         binding.activityList.adapter = ActivityAdapter(
-            onDeleteClicked = ::showDeleteConfirmationDialog,
-            onEditEndTimeClicked = ::showEndTimeChooserDialog,
-            onEditStartTimeClicked = ::showStartTimeChooserDialog
+            ActivityPopupMenuCallbacks(
+                onDeleteClicked = ::showDeleteConfirmationDialog,
+                onEditEndTimeClicked = ::showEndTimeChooserDialog,
+                onEditStartTimeClicked = ::showStartTimeChooserDialog
+            )
         )
         binding.activityList.layoutManager = LinearLayoutManager(context)
     }

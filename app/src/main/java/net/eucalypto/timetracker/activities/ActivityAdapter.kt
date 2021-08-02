@@ -11,11 +11,7 @@ import net.eucalypto.timetracker.R
 import net.eucalypto.timetracker.databinding.ActivityListItemBinding
 import net.eucalypto.timetracker.domain.model.Activity
 
-class ActivityAdapter(
-    private val onDeleteClicked: (Activity) -> Unit,
-    private val onEditEndTimeClicked: (Activity) -> Unit,
-    private val onEditStartTimeClicked: (Activity) -> Unit
-) :
+class ActivityAdapter(private val callbacks: ActivityPopupMenuCallbacks) :
     ListAdapter<Activity, ActivityViewHolder>(ActivityDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
@@ -25,9 +21,7 @@ class ActivityAdapter(
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
         holder.bindTo(
             getItem(position),
-            onDeleteClicked,
-            onEditEndTimeClicked,
-            onEditStartTimeClicked
+            callbacks
         )
     }
 
@@ -52,31 +46,22 @@ class ActivityViewHolder(val binding: ActivityListItemBinding) :
 
     fun bindTo(
         item: Activity,
-        onDeleteClicked: (Activity) -> Unit,
-        onEditEndTimeClicked: (Activity) -> Unit,
-        onEditStartTimeClicked: (Activity) -> Unit
+        callbacks: ActivityPopupMenuCallbacks
     ) {
         activity = item
         binding.activity = item
         binding.activityContextButton.setOnClickListener {
-            showContextMenu(it, onDeleteClicked, onEditEndTimeClicked, onEditStartTimeClicked)
+            showContextMenu(it, callbacks)
         }
         binding.root.setOnLongClickListener {
-            showContextMenu(
-                binding.activityContextButton,
-                onDeleteClicked,
-                onEditEndTimeClicked,
-                onEditStartTimeClicked
-            )
+            showContextMenu(binding.activityContextButton, callbacks)
             true
         }
     }
 
     private fun showContextMenu(
         view: View,
-        onDeleteClicked: (Activity) -> Unit,
-        onEditEndTimeClicked: (Activity) -> Unit,
-        onEditStartTimeClicked: (Activity) -> Unit
+        callbacks: ActivityPopupMenuCallbacks
     ) {
 
         PopupMenu(view.context, view).apply {
@@ -84,15 +69,15 @@ class ActivityViewHolder(val binding: ActivityListItemBinding) :
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.menu_item_edit_start_time -> {
-                        onEditStartTimeClicked(activity)
+                        callbacks.onEditStartTimeClicked(activity)
                         true
                     }
                     R.id.menu_item_delete -> {
-                        onDeleteClicked(activity)
+                        callbacks.onDeleteClicked(activity)
                         true
                     }
                     R.id.menu_item_edit_end_time -> {
-                        onEditEndTimeClicked(activity)
+                        callbacks.onEditEndTimeClicked(activity)
                         true
                     }
                     else -> {
@@ -117,4 +102,8 @@ class ActivityViewHolder(val binding: ActivityListItemBinding) :
 
 }
 
-
+data class ActivityPopupMenuCallbacks(
+    val onDeleteClicked: (Activity) -> Unit,
+    val onEditEndTimeClicked: (Activity) -> Unit,
+    val onEditStartTimeClicked: (Activity) -> Unit
+)
