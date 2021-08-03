@@ -56,9 +56,11 @@ class CategoryListFragment : Fragment() {
     private fun setupCategoryRecyclerView(binding: CategoryListFragmentBinding) {
         binding.categoryList.apply {
             val categoryAdapter = CategoryAdapter(
-                onWriteNfcClicked = ::showWriteNfcActivityAsDialog,
-                onEditClicked = ::showEditCategoryDialog,
-                onDeleteClicked = ::showDeleteConfirmationDialog
+                CategoryPopupMenuCallbacks(
+                    onWriteNfcClicked = ::showWriteNfcActivityAsDialog,
+                    onEditClicked = ::showEditCategoryDialog,
+                    onDeleteClicked = ::showDeleteConfirmationDialog
+                )
             )
 
             adapter = categoryAdapter

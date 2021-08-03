@@ -12,11 +12,7 @@ import net.eucalypto.timetracker.R
 import net.eucalypto.timetracker.databinding.CategoryListItemBinding
 import net.eucalypto.timetracker.domain.model.Category
 
-class CategoryAdapter(
-    private val onWriteNfcClicked: (Category) -> Unit,
-    private val onEditClicked: (Category) -> Unit,
-    private val onDeleteClicked: (Category) -> Unit
-) :
+class CategoryAdapter(private val callbacks: CategoryPopupMenuCallbacks) :
     ListAdapter<Category, CategoryViewHolder>(CategoryDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
@@ -25,7 +21,7 @@ class CategoryAdapter(
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         val listItem = getItem(position)
-        holder.bind(listItem, onWriteNfcClicked, onEditClicked, onDeleteClicked)
+        holder.bind(listItem, callbacks)
     }
 }
 
@@ -36,51 +32,37 @@ private constructor(private val binding: CategoryListItemBinding) :
 
     lateinit var category: Category
 
-    fun bind(
-        category: Category,
-        onWriteNfcClicked: (Category) -> Unit,
-        onEditClicked: (Category) -> Unit,
-        onDeleteClicked: (Category) -> Unit
-    ) {
+    fun bind(category: Category, callbacks: CategoryPopupMenuCallbacks) {
         this.category = category
         binding.category = category
         binding.contextMenuButton.setOnClickListener {
             showContextMenu(
                 it,
-                onEditClicked,
-                onWriteNfcClicked,
-                onDeleteClicked
+                callbacks
             )
         }
         binding.root.setOnLongClickListener {
             showContextMenu(
                 binding.contextMenuButton,
-                onEditClicked,
-                onWriteNfcClicked,
-                onDeleteClicked
+                callbacks
             )
             true
         }
     }
 
-    private fun showContextMenu(
-        it: View,
-        onEditClicked: (Category) -> Unit,
-        onWriteNfcClicked: (Category) -> Unit,
-        onDeleteClicked: (Category) -> Unit
-    ) {
+    private fun showContextMenu(it: View, callbacks: CategoryPopupMenuCallbacks) {
         val menu = PopupMenu(it.context, it)
         menu.inflate(R.menu.category_list_item_popup_menu)
         menu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_item_edit -> {
-                    onEditClicked(category)
+                    callbacks.onEditClicked(category)
                 }
                 R.id.menu_item_delete -> {
-                    onDeleteClicked(category)
+                    callbacks.onDeleteClicked(category)
                 }
                 R.id.menu_item_write_nfc -> {
-                    onWriteNfcClicked(category)
+                    callbacks.onWriteNfcClicked(category)
                 }
             }
             true
@@ -107,6 +89,12 @@ class CategoryDiffCallback : ItemCallback<Category>() {
         return oldItem == newItem
     }
 }
+
+class CategoryPopupMenuCallbacks(
+    val onWriteNfcClicked: (Category) -> Unit,
+    val onEditClicked: (Category) -> Unit,
+    val onDeleteClicked: (Category) -> Unit
+)
 
 
 @BindingAdapter("categoryList")
