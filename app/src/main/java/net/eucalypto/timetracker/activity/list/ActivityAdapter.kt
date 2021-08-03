@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.activities
+package net.eucalypto.timetracker.activity.list
 
 import android.view.LayoutInflater
 import android.view.View

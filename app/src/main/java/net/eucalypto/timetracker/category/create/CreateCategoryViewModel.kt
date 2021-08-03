@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.categories.create
+package net.eucalypto.timetracker.category.create
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch

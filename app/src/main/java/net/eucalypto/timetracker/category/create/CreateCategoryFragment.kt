@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.categories.create
+package net.eucalypto.timetracker.category.create
 
 import android.os.Bundle
 import android.view.LayoutInflater

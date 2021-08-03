@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.activities.dialog
+package net.eucalypto.timetracker.activity.list.dialog
 
 import android.app.TimePickerDialog
 import android.content.DialogInterface

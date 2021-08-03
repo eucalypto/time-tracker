@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.activities
+package net.eucalypto.timetracker.activity.list
 
 import android.app.TimePickerDialog
 import android.content.DialogInterface
@@ -13,9 +13,9 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import net.eucalypto.timetracker.R
-import net.eucalypto.timetracker.activities.dialog.DeleteActivityConfirmationDialogFragment
-import net.eucalypto.timetracker.activities.dialog.DialogViewModel
-import net.eucalypto.timetracker.activities.dialog.TimePickerDialogFragment
+import net.eucalypto.timetracker.activity.list.dialog.DeleteActivityConfirmationDialogFragment
+import net.eucalypto.timetracker.activity.list.dialog.DialogViewModel
+import net.eucalypto.timetracker.activity.list.dialog.TimePickerDialogFragment
 import net.eucalypto.timetracker.data.getRepository
 import net.eucalypto.timetracker.databinding.ActivityListFragmentBinding
 import net.eucalypto.timetracker.domain.model.Activity

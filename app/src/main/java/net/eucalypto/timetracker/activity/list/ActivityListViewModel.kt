@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.activities
+package net.eucalypto.timetracker.activity.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
