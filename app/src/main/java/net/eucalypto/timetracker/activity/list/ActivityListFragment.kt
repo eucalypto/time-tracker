@@ -7,10 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TimePicker
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import net.eucalypto.timetracker.R
 import net.eucalypto.timetracker.activity.list.dialog.DeleteActivityConfirmationDialogFragment
@@ -30,14 +32,12 @@ class ActivityListFragment : Fragment() {
 
     private val dialogViewModel: DialogViewModel by activityViewModels()
 
-    private lateinit var binding: ActivityListFragmentBinding
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = ActivityListFragmentBinding.inflate(inflater, container, false)
+        val binding = ActivityListFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -46,21 +46,23 @@ class ActivityListFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
+        val binding = DataBindingUtil.getBinding<ActivityListFragmentBinding>(view)!!
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        setupRecyclerView()
+        setup(binding.activityList)
     }
 
-    private fun setupRecyclerView() {
-        binding.activityList.adapter = ActivityAdapter(
+    private fun setup(activityList: RecyclerView) {
+        activityList.adapter = ActivityAdapter(
             ActivityPopupMenuCallbacks(
                 onDeleteClicked = ::showDeleteConfirmationDialog,
                 onEditEndTimeClicked = ::showEndTimeChooserDialog,
                 onEditStartTimeClicked = ::showStartTimeChooserDialog
             )
         )
-        binding.activityList.layoutManager = LinearLayoutManager(context)
+        activityList.layoutManager = LinearLayoutManager(context)
     }
 
     private fun showDeleteConfirmationDialog(activity: Activity) {
@@ -124,7 +126,7 @@ class ActivityListFragment : Fragment() {
     private fun showSnackbarWithText(resId: Int) {
         Snackbar
             .make(
-                binding.root,
+                requireView(),
                 resId,
                 Snackbar.LENGTH_INDEFINITE
             )
