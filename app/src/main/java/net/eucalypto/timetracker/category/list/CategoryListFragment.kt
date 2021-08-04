@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import net.eucalypto.timetracker.R
 import net.eucalypto.timetracker.data.getRepository
 import net.eucalypto.timetracker.databinding.CategoryEditNameDialogBinding
@@ -44,25 +45,25 @@ class CategoryListFragment : Fragment() {
 
         val binding = DataBindingUtil.getBinding<CategoryListFragmentBinding>(view)!!
 
-        setupCategoryRecyclerView(binding)
+        setup(binding.categoryList)
 
         binding.addCategoryFab.setOnClickListener {
             val toCreateCategory =
-                CategoryListFragmentDirections.actionToCreateCategoryFragment(Category().asParcel())
+                CategoryListFragmentDirections
+                    .actionToCreateCategoryFragment(Category().asParcel())
             findNavController().navigate(toCreateCategory)
         }
     }
 
-    private fun setupCategoryRecyclerView(binding: CategoryListFragmentBinding) {
-        binding.categoryList.apply {
-            val categoryAdapter = CategoryAdapter(
-                CategoryPopupMenuCallbacks(
-                    onWriteNfcClicked = ::showWriteNfcActivityAsDialog,
-                    onEditClicked = ::showEditCategoryDialog,
-                    onDeleteClicked = ::showDeleteConfirmationDialog
-                )
+    private fun setup(categoryList: RecyclerView) {
+        val categoryAdapter = CategoryAdapter(
+            CategoryPopupMenuCallbacks(
+                onWriteNfcClicked = ::showWriteNfcActivityAsDialog,
+                onEditClicked = ::showEditCategoryDialog,
+                onDeleteClicked = ::showDeleteConfirmationDialog
             )
-
+        )
+        categoryList.apply {
             adapter = categoryAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
@@ -91,7 +92,7 @@ class CategoryListFragment : Fragment() {
 
 class EditCategoryDialogFragment : DialogFragment() {
 
-    private val viewModel: CategoryListViewModel by activityViewModels() {
+    private val viewModel: CategoryListViewModel by activityViewModels {
         CategoryListViewModel.Factory(getRepository(requireContext()))
     }
 
@@ -104,6 +105,7 @@ class EditCategoryDialogFragment : DialogFragment() {
         val category = args.categoryParcel.asCategory()
 
         return AlertDialog.Builder(requireContext())
+            .setView(inputBinding.root)
             .setTitle(getString(R.string.edit_category_name_dialog_title))
             .setMessage(
                 getString(
@@ -124,7 +126,6 @@ class EditCategoryDialogFragment : DialogFragment() {
                     viewModel.saveCategory(category.withName(input))
                 }
             }
-            .setView(inputBinding.root)
             .create()
     }
 }
@@ -142,7 +143,7 @@ class DeleteCategoryConfirmationDialogFragment : DialogFragment() {
             .setMessage(getString(R.string.dialog_delete_message, category.name))
             .setNegativeButton(R.string.dialog_delete_button_cancel, null)
             .setPositiveButton(R.string.dialog_delete_button_delete) { _, _ ->
-                viewModel.onDeleteMenuItemClicked(category)
+                viewModel.deleteCategoryAndCorrespondingActivities(category)
             }
             .create()
     }

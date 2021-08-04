@@ -14,7 +14,7 @@ class CategoryListViewModel(private val repository: Repository) : ViewModel() {
 
     lateinit var categoryToDelete: Category
 
-    fun onDeleteMenuItemClicked(category: Category) {
+    fun deleteCategoryAndCorrespondingActivities(category: Category) {
         viewModelScope.launch {
             val correspondingActivities = repository.getActivitiesWithCategory(category)
             repository.delete(correspondingActivities)
