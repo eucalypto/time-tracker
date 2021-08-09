@@ -19,12 +19,11 @@
     <string name="menu_item_delete">Delete</string>
     <string name="context_menu_icon">⋮</string>
     <string name="menu_item_edit">Edit</string>
-    <string name="menu_item_write_nfc">Write NFC Tag</string>
+    <string name="write_nfc_tag">Write NFC Tag</string>
     <string name="dialog_delete_title">Delete category: %s?</string>
     <string name="dialog_delete_message">Do you really want to delete category %s?</string>
     <string name="dialog_delete_button_cancel">Cancel</string>
     <string name="dialog_delete_button_delete">Delete</string>
-    <string name="write_nfc_actionbar_title">Write NFC Tag: %s</string>
     <string name="category_name_change_hint">New Category Name</string>
     <string name="edit_category_name_dialog_title">Edit Category Name</string>
     <string name="edit_category_name_dialog_message">Current Category Name: \"%s\"</string>

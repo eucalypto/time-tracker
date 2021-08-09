@@ -23,7 +23,9 @@ import java.io.IOException
 
 class WriteNfcActivity : AppCompatActivity() {
 
-    private lateinit var nfcAdapter: NfcAdapter
+    private val nfcAdapter: NfcAdapter by lazy {
+        NfcAdapter.getDefaultAdapter(this)
+    }
 
     private val args: WriteNfcActivityArgs by navArgs()
 
@@ -32,12 +34,15 @@ class WriteNfcActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        title = getString(R.string.write_nfc_actionbar_title, category.name)
-
         val binding = WriteNfcActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+        setUpUI(binding)
+    }
+
+    private fun setUpUI(binding: WriteNfcActivityBinding) {
+        setTitle(R.string.write_nfc_tag)
+        binding.title.text = category.name
 
         binding.backButton.setOnClickListener {
             finish()
