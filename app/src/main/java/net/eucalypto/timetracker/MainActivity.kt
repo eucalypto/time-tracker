@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import net.eucalypto.timetracker.databinding.MainActivityBinding
 
 
@@ -29,27 +30,15 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment: NavHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        setupActionBarWithNavController(navController, binding.navigationDrawerLayout)
 
-        NavigationUI.setupWithNavController(binding.navigationDrawerView, navController)
+        setupActionBarWithNavController(navController)
+
+        binding.bottomNav.setupWithNavController(navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return NavigationUI.navigateUp(
-            navController,
-            binding.navigationDrawerLayout
-        ).also { closeDrawerIfOpen() }
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
-    private fun closeDrawerIfOpen() {
-        binding.navigationDrawerLayout.apply {
-            val drawer = binding.navigationDrawerView
-            if (isDrawerVisible(drawer)) {
-                closeDrawer(drawer)
-            }
-        }
-    }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.actionbar_overflow, menu)

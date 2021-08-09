@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/activityListFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_view_list_24"
+        android:title="@string/activity_list_fragment_title" />
+
+    <item
+        android:id="@+id/categoryListFragment"
+        android:icon="@drawable/ic_baseline_category_24"
+        android:title="@string/categories" />
+
+</menu>

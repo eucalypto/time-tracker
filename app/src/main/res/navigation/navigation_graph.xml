@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/categoryListFragment"
         android:name="net.eucalypto.timetracker.category.list.CategoryListFragment"
-        android:label="@string/category_list_fragment_title"
+        android:label="@string/categories"
         tools:layout="@layout/category_list_fragment">
         <action
             android:id="@+id/action_to_writeNfcActivity"

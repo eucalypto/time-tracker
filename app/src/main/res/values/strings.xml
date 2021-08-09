@@ -15,7 +15,7 @@
     <string name="read_nfc_toast_finish_last_activity">Finished: %s</string>
     <string name="read_nfc_toast_finish_last_activity_and_start_new_one">Finished : %s\nStarted: %s</string>
     <string name="read_nfc_toast_unknown_activity">Unknown activity category.</string>
-    <string name="menu_item_categories">Activity Categories</string>
+    <string name="categories">Categories</string>
     <string name="menu_item_delete">Delete</string>
     <string name="context_menu_icon">⋮</string>
     <string name="menu_item_edit">Edit</string>
@@ -30,7 +30,6 @@
     <string name="edit_category_name_dialog_button_cancel">Cancel</string>
     <string name="edit_category_name_dialog_button_rename">Rename</string>
     <string name="activity_list_fragment_title">Activities</string>
-    <string name="category_list_fragment_title">Activity Categories</string>
     <string name="about_fragment_navigation_title">About</string>
     <string name="start_time_label">Start:</string>
     <string name="end_time_label">End:</string>
