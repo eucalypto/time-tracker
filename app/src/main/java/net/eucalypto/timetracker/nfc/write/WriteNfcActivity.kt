@@ -7,6 +7,7 @@ import android.nfc.NdefMessage
 import android.nfc.NdefRecord
 import android.nfc.NfcAdapter
 import android.nfc.Tag
+import android.nfc.tech.Ndef
 import android.nfc.tech.NfcA
 import android.os.Bundle
 import android.widget.Toast
@@ -15,6 +16,7 @@ import androidx.navigation.navArgs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.eucalypto.timetracker.R
 import net.eucalypto.timetracker.databinding.WriteNfcActivityBinding
 import net.eucalypto.timetracker.domain.model.util.asCategory
@@ -41,12 +43,9 @@ class WriteNfcActivity : AppCompatActivity() {
     }
 
     private fun setUpUI(binding: WriteNfcActivityBinding) {
+        binding.activity = this
+        binding.category = category
         setTitle(R.string.write_nfc_tag)
-        binding.title.text = category.name
-
-        binding.backButton.setOnClickListener {
-            finish()
-        }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -56,14 +55,10 @@ class WriteNfcActivity : AppCompatActivity() {
     }
 
     private fun writeMessageToTag(intent: Intent) {
-
-        val message = createNdefMessage()
-        val tagFromIntent: Tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)!!
-
-        val tagHandler = TagHandler(tagFromIntent)
         CoroutineScope(Dispatchers.Main).launch {
+            val message = createNdefMessage()
             try {
-                tagHandler.writeMessage(message)
+                writeMessage(message, intent)
                 Toast
                     .makeText(
                         this@WriteNfcActivity,
@@ -71,6 +66,7 @@ class WriteNfcActivity : AppCompatActivity() {
                         Toast.LENGTH_LONG
                     )
                     .show()
+                this@WriteNfcActivity.finish()
             } catch (e: IOException) {
                 Timber.e(e, "Could not write NFC tag for category: ${category.name}")
                 Toast.makeText(
@@ -89,6 +85,18 @@ class WriteNfcActivity : AppCompatActivity() {
         return NdefMessage(record, androidApplicationRecord)
     }
 
+    private suspend fun writeMessage(message: NdefMessage, intent: Intent) =
+        withContext(Dispatchers.IO) {
+            val tag: Tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)!!
+            val ndef: Ndef = Ndef.get(tag)
+
+            ndef.use {
+                it.connect()
+                if (it.isConnected)
+                    it.writeNdefMessage(message)
+            }
+        }
+
     override fun onResume() {
         super.onResume()
         enableNfcIntentInterception()
@@ -96,10 +104,10 @@ class WriteNfcActivity : AppCompatActivity() {
 
     private fun enableNfcIntentInterception() {
 
-        val fooIntent = Intent(this, this::class.java).apply {
+        val selfIntent = Intent(this, this::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         }
-        val pendingIntent = PendingIntent.getActivity(this, 0, fooIntent, 0)
+        val pendingSelfIntent = PendingIntent.getActivity(this, 0, selfIntent, 0)
 
         val ndefIntentFilter = IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED).apply {
             addDataType("*/*")
@@ -109,7 +117,7 @@ class WriteNfcActivity : AppCompatActivity() {
 
         nfcAdapter.enableForegroundDispatch(
             this,
-            pendingIntent,
+            pendingSelfIntent,
             intentFiltersArray,
             techListArray
         )
