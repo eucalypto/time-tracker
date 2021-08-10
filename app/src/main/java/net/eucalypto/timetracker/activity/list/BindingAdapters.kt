@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter
 
 
 fun ZonedDateTime.asCustomFormatString(): String {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm") // e.g. 2021-10-07 21:43
+    val formatter = DateTimeFormatter.ofPattern("kk:mm") // e.g. 21:43
     return this.format(formatter)
 }
 
@@ -20,10 +20,15 @@ fun bindActivityList(view: RecyclerView, activityList: List<Activity>?) {
     (view.adapter as ActivityAdapter).submitList(activityList)
 }
 
-@BindingAdapter("dateTime")
-fun bindDate(view: TextView, dateTime: ZonedDateTime?) {
+@BindingAdapter("time")
+fun bindTime(view: TextView, dateTime: ZonedDateTime?) {
     val dateNotSetYet = dateTime == NOT_SET_YET
     view.text = if (dateNotSetYet) "" else dateTime?.asCustomFormatString()
+}
+
+@BindingAdapter("date")
+fun bindDate(view: TextView, dateTime: ZonedDateTime?) {
+    view.text = dateTime?.format(DateTimeFormatter.ISO_LOCAL_DATE)
 }
 
 @BindingAdapter("duration")

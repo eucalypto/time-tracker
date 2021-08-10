@@ -29,16 +29,26 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Coding Something Amazing" />
+                tools:text="Coding" />
+
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:date="@{activity.startTime}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/start_time_label"
+                tools:text="2021-04-16" />
 
             <TextView
                 android:id="@+id/start_time_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/start_time_label"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/date"
                 app:layout_constraintTop_toBottomOf="@id/category" />
 
             <TextView
@@ -46,10 +56,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
-                app:dateTime="@{activity.startTime}"
                 app:layout_constraintStart_toEndOf="@+id/start_time_label"
                 app:layout_constraintTop_toTopOf="@+id/start_time_label"
-                tools:text="2021-04-16 12:34" />
+                app:time="@{activity.startTime}"
+                tools:text="12:34" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline2"
@@ -64,9 +74,10 @@
                 android:id="@+id/duration_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:text="@string/duration_label"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/end_time"
+                app:layout_constraintTop_toTopOf="@+id/date" />
 
             <TextView
                 android:id="@+id/duration"
@@ -82,8 +93,9 @@
                 android:id="@+id/end_time_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:text="@string/end_time_label"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
+                app:layout_constraintStart_toEndOf="@+id/start_time"
                 app:layout_constraintTop_toTopOf="@+id/start_time" />
 
 
@@ -92,10 +104,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
-                app:dateTime="@{activity.endTime}"
                 app:layout_constraintStart_toEndOf="@+id/end_time_label"
                 app:layout_constraintTop_toTopOf="@+id/end_time_label"
-                tools:text="2021-04-16 12:34" />
+                app:time="@{activity.endTime}"
+                tools:text="12:34" />
 
             <TextView
                 android:id="@+id/activity_context_button"
