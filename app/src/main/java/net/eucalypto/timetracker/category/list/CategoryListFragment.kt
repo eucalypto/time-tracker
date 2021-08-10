@@ -103,6 +103,7 @@ class EditCategoryDialogFragment : DialogFragment() {
 
         val inputBinding = CategoryEditNameDialogBinding.inflate(requireActivity().layoutInflater)
         val category = args.categoryParcel.asCategory()
+        inputBinding.categoryNameEdit.editText?.setText(category.name)
 
         return AlertDialog.Builder(requireContext())
             .setView(inputBinding.root)
@@ -122,7 +123,7 @@ class EditCategoryDialogFragment : DialogFragment() {
             ) { _, _ ->
                 inputBinding.categoryNameEdit.editText?.let {
                     val input = it.text.toString()
-                    if (input.isBlank()) return@let
+                    if (input.isBlank() || input == category.name) return@let
                     viewModel.saveCategory(category.withName(input))
                 }
             }
@@ -140,7 +141,7 @@ class DeleteCategoryConfirmationDialogFragment : DialogFragment() {
         val category = viewModel.categoryToDelete
         return AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.dialog_delete_title, category.name))
-            .setMessage(getString(R.string.dialog_delete_message, category.name))
+            .setMessage(R.string.dialog_delete_message)
             .setNegativeButton(R.string.dialog_delete_button_cancel, null)
             .setPositiveButton(R.string.dialog_delete_button_delete) { _, _ ->
                 viewModel.deleteCategoryAndCorrespondingActivities(category)

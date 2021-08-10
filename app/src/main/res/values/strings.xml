@@ -21,7 +21,7 @@
     <string name="menu_item_edit">Edit</string>
     <string name="write_nfc_tag">Write NFC Tag</string>
     <string name="dialog_delete_title">Delete category: %s?</string>
-    <string name="dialog_delete_message">Do you really want to delete category %s?</string>
+    <string name="dialog_delete_message">WARNING: By deleting this category, all corresponding activity entries will be deleted as well.</string>
     <string name="dialog_delete_button_cancel">Cancel</string>
     <string name="dialog_delete_button_delete">Delete</string>
     <string name="category_name_change_hint">New Category Name</string>

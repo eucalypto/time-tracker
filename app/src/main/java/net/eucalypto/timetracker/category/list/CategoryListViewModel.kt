@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import net.eucalypto.timetracker.data.Repository
 import net.eucalypto.timetracker.domain.model.Category
+import timber.log.Timber
 
 class CategoryListViewModel(private val repository: Repository) : ViewModel() {
 
@@ -24,6 +25,7 @@ class CategoryListViewModel(private val repository: Repository) : ViewModel() {
 
     fun saveCategory(category: Category) = viewModelScope.launch {
         repository.update(category)
+        Timber.d("Category saved with new name: ${category.name}")
     }
 
     class Factory(private val repository: Repository) : ViewModelProvider.Factory {
