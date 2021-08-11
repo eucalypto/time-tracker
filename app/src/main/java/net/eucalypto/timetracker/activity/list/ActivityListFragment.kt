@@ -1,11 +1,9 @@
 package net.eucalypto.timetracker.activity.list
 
-import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TimePicker
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -18,7 +16,6 @@ import net.eucalypto.timetracker.activity.list.dialog.TimePickerDialogFragment
 import net.eucalypto.timetracker.data.getRepository
 import net.eucalypto.timetracker.databinding.ActivityListFragmentBinding
 import net.eucalypto.timetracker.domain.model.Activity
-import java.time.ZonedDateTime
 
 class ActivityListFragment : Fragment() {
 
@@ -45,14 +42,14 @@ class ActivityListFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        setup(binding.activityList)
+        setupRecyclerView(binding.activityList)
 
         viewModel.editTimeError.observe(viewLifecycleOwner) { editTimeError ->
             showErrorSnackbar(editTimeError)
         }
     }
 
-    private fun setup(activityList: RecyclerView) {
+    private fun setupRecyclerView(activityList: RecyclerView) {
         activityList.adapter = ActivityAdapter(
             ActivityPopupMenuCallbacks(
                 onDeleteClicked = ::showDeleteConfirmationDialog,
@@ -98,15 +95,7 @@ class ActivityListFragment : Fragment() {
     }
 
     private fun showStartTimeChooserDialog(activity: Activity) {
-        viewModel.apply {
-            chosenActivity = activity
-            timeToDisplay = activity.startTime
-            titleId = R.string.activity_edit_dialog_start_time_title
-            onTimeSet =
-                TimePickerDialog.OnTimeSetListener { _: TimePicker?, hourOfDay: Int, minute: Int ->
-                    viewModel.setNewStartTime(hourOfDay, minute)
-                }
-        }
+        viewModel.setChosenActivityForStartTime(activity)
         TimePickerDialogFragment().show(
             parentFragmentManager,
             TimePickerDialogFragment.TAG_START_TIME
@@ -114,14 +103,7 @@ class ActivityListFragment : Fragment() {
     }
 
     private fun showEndTimeChooserDialog(activity: Activity) {
-        viewModel.apply {
-            chosenActivity = activity
-            timeToDisplay = if (activity.isFinished()) activity.endTime else ZonedDateTime.now()
-            titleId = R.string.activity_edit_dialog_end_time_title
-            onTimeSet = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                viewModel.setNewEndTime(hourOfDay, minute)
-            }
-        }
+        viewModel.setChosenActivityForEndTime(activity)
         TimePickerDialogFragment().show(
             parentFragmentManager,
             TimePickerDialogFragment.TAG_END_TIME

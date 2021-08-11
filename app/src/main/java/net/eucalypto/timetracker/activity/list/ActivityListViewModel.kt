@@ -1,6 +1,5 @@
 package net.eucalypto.timetracker.activity.list
 
-import android.app.TimePickerDialog
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,8 +18,7 @@ class ActivityListViewModel(private val repository: Repository) : ViewModel() {
     lateinit var chosenActivity: Activity
 
     lateinit var timeToDisplay: ZonedDateTime
-    var titleId: Int = 0
-    lateinit var onTimeSet: TimePickerDialog.OnTimeSetListener
+    lateinit var startOrEndTime: StartOrEndTime
 
     private val _editTimeError = MutableLiveData<EditTimeError>(EditTimeError.NO_ERROR)
     val editTimeError: LiveData<EditTimeError> get() = _editTimeError
@@ -65,10 +63,26 @@ class ActivityListViewModel(private val repository: Repository) : ViewModel() {
     fun resetEditTimeError() {
         _editTimeError.value = EditTimeError.NO_ERROR
     }
+
+    fun setChosenActivityForStartTime(activity: Activity) {
+        chosenActivity = activity
+        timeToDisplay = activity.startTime
+        startOrEndTime = StartOrEndTime.START
+    }
+
+    fun setChosenActivityForEndTime(activity: Activity) {
+        chosenActivity = activity
+        timeToDisplay = if (activity.isFinished()) activity.endTime else ZonedDateTime.now()
+        startOrEndTime = StartOrEndTime.END
+    }
 }
 
 enum class EditTimeError {
     NO_ERROR, FUTURE_TIME, START_AFTER_END
+}
+
+enum class StartOrEndTime {
+    START, END
 }
 
 
