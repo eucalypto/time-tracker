@@ -47,11 +47,7 @@
         android:id="@+id/activityListFragment"
         android:name="net.eucalypto.timetracker.activity.list.ActivityListFragment"
         android:label="@string/activity_list_fragment_title"
-        tools:layout="@layout/activity_list_fragment">
-        <action
-            android:id="@+id/action_to_categoryListFragment"
-            app:destination="@id/categoryListFragment" />
-    </fragment>
+        tools:layout="@layout/activity_list_fragment" />
     <fragment
         android:id="@+id/aboutFragment"
         android:name="net.eucalypto.timetracker.about.AboutFragment"
@@ -61,11 +57,7 @@
         android:id="@+id/editCategoryDialogFragment"
         android:name="net.eucalypto.timetracker.category.list.EditCategoryDialogFragment"
         android:label="EditCategoryDialogFragment"
-        tools:layout="@layout/category_edit_name_dialog">
-        <argument
-            android:name="categoryParcel"
-            app:argType="net.eucalypto.timetracker.domain.model.util.CategoryParcel" />
-    </dialog>
+        tools:layout="@layout/category_edit_name_dialog" />
     <dialog
         android:id="@+id/deleteCategoryConfirmationDialogFragment"
         android:name="net.eucalypto.timetracker.category.list.DeleteCategoryConfirmationDialogFragment"

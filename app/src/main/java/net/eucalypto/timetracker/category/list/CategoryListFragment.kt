@@ -11,7 +11,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import net.eucalypto.timetracker.R
@@ -19,7 +18,6 @@ import net.eucalypto.timetracker.data.getRepository
 import net.eucalypto.timetracker.databinding.CategoryEditNameDialogBinding
 import net.eucalypto.timetracker.databinding.CategoryListFragmentBinding
 import net.eucalypto.timetracker.domain.model.Category
-import net.eucalypto.timetracker.domain.model.util.asCategory
 import net.eucalypto.timetracker.domain.model.util.asParcel
 
 class CategoryListFragment : Fragment() {
@@ -45,8 +43,11 @@ class CategoryListFragment : Fragment() {
 
         val binding = DataBindingUtil.getBinding<CategoryListFragmentBinding>(view)!!
 
-        setup(binding.categoryList)
+        setupRecyclerView(binding.categoryList)
+        setupAddCategoryFab(binding)
+    }
 
+    private fun setupAddCategoryFab(binding: CategoryListFragmentBinding) {
         binding.addCategoryFab.setOnClickListener {
             val toCreateCategory =
                 CategoryListFragmentDirections
@@ -55,7 +56,7 @@ class CategoryListFragment : Fragment() {
         }
     }
 
-    private fun setup(categoryList: RecyclerView) {
+    private fun setupRecyclerView(categoryList: RecyclerView) {
         val categoryAdapter = CategoryAdapter(
             CategoryPopupMenuCallbacks(
                 onWriteNfcClicked = ::showWriteNfcActivityAsDialog,
@@ -76,8 +77,9 @@ class CategoryListFragment : Fragment() {
     }
 
     private fun showEditCategoryDialog(category: Category) {
+        viewModel.categoryToUpdate = category
         val toEditCategory =
-            CategoryListFragmentDirections.actionToEditCategoryDialogFragment(category.asParcel())
+            CategoryListFragmentDirections.actionToEditCategoryDialogFragment()
         findNavController().navigate(toEditCategory)
     }
 
@@ -96,13 +98,10 @@ class EditCategoryDialogFragment : DialogFragment() {
         CategoryListViewModel.Factory(getRepository(requireContext()))
     }
 
-    private val args: EditCategoryDialogFragmentArgs by navArgs()
-
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val inputBinding = CategoryEditNameDialogBinding.inflate(requireActivity().layoutInflater)
-        val category = args.categoryParcel.asCategory()
+        val category = viewModel.categoryToUpdate
         inputBinding.categoryNameEdit.editText?.setText(category.name)
 
         return AlertDialog.Builder(requireContext())
