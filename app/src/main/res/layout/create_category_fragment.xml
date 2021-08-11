@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:onClick="@{() -> viewModel.onDoneButtonClicked()}"
+            android:onClick="@{() -> viewModel.saveCategoryAndQuit()}"
             android:text="@string/done_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/category_name_edit" />

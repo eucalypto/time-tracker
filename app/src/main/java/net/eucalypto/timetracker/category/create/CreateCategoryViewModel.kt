@@ -18,7 +18,7 @@ class CreateCategoryViewModel(
     private val _isFinished = MutableLiveData(false)
 
 
-    fun onDoneButtonClicked() {
+    fun saveCategoryAndQuit() {
         viewModelScope.launch { saveCategory() }
         _isFinished.value = true
     }

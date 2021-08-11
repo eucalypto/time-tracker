@@ -17,12 +17,10 @@ data class Activity(
     }
 
     private fun throwExceptionIfDataCorrupt() {
-        val endTimeIsSetAndBeforeStartTime = endTime != NOT_SET_YET && endTime < startTime
-        if (endTimeIsSetAndBeforeStartTime) throw StartTimeBeforeEndTimeException()
+        if (endTime != NOT_SET_YET && endTime < startTime) throw StartTimeBeforeEndTimeException()
 
         val now = ZonedDateTime.now()
-        val startTimeOrEndTimeInTheFuture = startTime > now || endTime > now
-        if (startTimeOrEndTimeInTheFuture) throw FutureTimeException()
+        if (startTime > now || endTime > now) throw FutureTimeException()
     }
 
     val duration: Duration
