@@ -33,7 +33,7 @@ class ActivityListViewModel(private val repository: Repository) : ViewModel() {
 
     fun setNewEndTime(hourOfDay: Int, minute: Int) {
         val newEndTime = when {
-            chosenActivity.isFinished() -> chosenActivity.endTime
+            chosenActivity.isFinished -> chosenActivity.endTime
             else -> ZonedDateTime.now()
         }.withHour(hourOfDay).withMinute(minute).withSecond(0)
 
@@ -72,7 +72,7 @@ class ActivityListViewModel(private val repository: Repository) : ViewModel() {
 
     fun setChosenActivityForEndTime(activity: Activity) {
         chosenActivity = activity
-        timeToDisplay = if (activity.isFinished()) activity.endTime else ZonedDateTime.now()
+        timeToDisplay = if (activity.isFinished) activity.endTime else ZonedDateTime.now()
         startOrEndTime = StartOrEndTime.END
     }
 }

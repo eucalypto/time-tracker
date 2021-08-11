@@ -56,7 +56,7 @@ internal class ActivityTest {
             ZonedDateTime.now()
         )
 
-        val isFinished = finishedActivity.isFinished()
+        val isFinished = finishedActivity.isFinished
 
         assertThat(isFinished).isTrue()
     }
@@ -69,7 +69,7 @@ internal class ActivityTest {
             NOT_SET_YET
         )
 
-        val isFinished = unfinishedActivity.isFinished()
+        val isFinished = unfinishedActivity.isFinished
 
         assertThat(isFinished).isFalse()
     }

@@ -125,7 +125,7 @@ class ReadNfcWorker(
 
 
 internal fun determineScenario(lastActivity: Activity?, categoryFromNfc: Category): Scenario {
-    return if (lastActivity == null || lastActivity.isFinished()) {
+    return if (lastActivity == null || lastActivity.isFinished) {
         Scenario.NO_UNFINISHED_ACTIVITY
     } else if (lastActivity.category.id == categoryFromNfc.id) {
         Scenario.UNFINISHED_ACTIVITY_SAME_AS_TAG

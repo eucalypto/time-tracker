@@ -16,24 +16,16 @@ data class Activity(
         throwExceptionIfDataCorrupt()
     }
 
-    private fun throwExceptionIfDataCorrupt() {
-        if (endTime != NOT_SET_YET && endTime < startTime) throw StartTimeBeforeEndTimeException()
-
-        val now = ZonedDateTime.now()
-        if (startTime > now || endTime > now) throw FutureTimeException()
-    }
-
     val duration: Duration
         get() {
-            if (!isFinished()) {
+            if (!isFinished) {
                 return Duration.ZERO
             }
             return Duration.between(startTime, endTime)
         }
 
-    fun isFinished(): Boolean {
-        return endTime != NOT_SET_YET
-    }
+    val isFinished: Boolean
+        get() = endTime != NOT_SET_YET
 
     fun withEndTime(endTime: ZonedDateTime): Activity {
         return Activity(category, startTime, endTime, id)
@@ -41,6 +33,13 @@ data class Activity(
 
     fun withStartTime(startTime: ZonedDateTime): Activity {
         return Activity(category, startTime, endTime, id)
+    }
+
+    private fun throwExceptionIfDataCorrupt() {
+        if (endTime != NOT_SET_YET && endTime < startTime) throw StartTimeBeforeEndTimeException()
+
+        val now = ZonedDateTime.now()
+        if (startTime > now || endTime > now) throw FutureTimeException()
     }
 
     class StartTimeBeforeEndTimeException : IllegalArgumentException()
