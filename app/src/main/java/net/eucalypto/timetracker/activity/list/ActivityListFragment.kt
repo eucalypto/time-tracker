@@ -1,7 +1,6 @@
 package net.eucalypto.timetracker.activity.list
 
 import android.app.TimePickerDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +20,7 @@ import net.eucalypto.timetracker.databinding.ActivityListFragmentBinding
 import net.eucalypto.timetracker.domain.model.Activity
 import net.eucalypto.timetracker.domain.model.ActivityFutureTimeException
 import net.eucalypto.timetracker.domain.model.ActivityTimeLineException
+import java.time.ZonedDateTime
 
 class ActivityListFragment : Fragment() {
 
@@ -62,9 +62,7 @@ class ActivityListFragment : Fragment() {
     }
 
     private fun showDeleteConfirmationDialog(activity: Activity) {
-        viewModel.onDeleteConfirmation = DialogInterface.OnClickListener { _, _ ->
-            viewModel.delete(activity)
-        }
+        viewModel.chosenActivity = activity
         DeleteActivityConfirmationDialogFragment().show(
             childFragmentManager,
             DeleteActivityConfirmationDialogFragment.TAG
@@ -88,11 +86,14 @@ class ActivityListFragment : Fragment() {
 
     private fun showEndTimeChooserDialog(activity: Activity) {
         viewModel.apply {
-            timeToDisplay = activity.endTime
+            timeToDisplay = if (activity.isFinished()) activity.endTime else ZonedDateTime.now()
             titleId = R.string.activity_edit_dialog_end_time_title
             onTimeSet = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                val newEndTime =
-                    activity.endTime.withHour(hourOfDay).withMinute(minute).withSecond(0)
+                val newEndTime = when {
+                    activity.isFinished() -> activity.endTime
+                    else -> ZonedDateTime.now()
+                }.withHour(hourOfDay).withMinute(minute).withSecond(0)
+
                 tryUpdateActivity { activity.withEndTime(newEndTime) }
             }
         }

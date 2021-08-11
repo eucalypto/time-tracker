@@ -20,7 +20,9 @@ class DeleteActivityConfirmationDialogFragment : DialogFragment() {
         return AlertDialog.Builder(requireContext())
             .setTitle(R.string.activity_list_dialog_delete_title)
             .setMessage(R.string.activity_list_dialog_delete_message)
-            .setPositiveButton(R.string.dialog_delete_button_delete, viewModel.onDeleteConfirmation)
+            .setPositiveButton(R.string.dialog_delete_button_delete) { _, _ ->
+                viewModel.delete(viewModel.chosenActivity)
+            }
             .setNegativeButton(R.string.dialog_delete_button_cancel) { _, _ -> }
             .create()
     }

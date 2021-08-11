@@ -1,7 +1,6 @@
 package net.eucalypto.timetracker.activity.list
 
 import android.app.TimePickerDialog
-import android.content.DialogInterface
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -16,7 +15,7 @@ class ActivityListViewModel(private val repository: Repository) : ViewModel() {
     val activityList: LiveData<List<Activity>> = repository.getActivitiesAsLiveData()
 
 
-    lateinit var onDeleteConfirmation: DialogInterface.OnClickListener
+    lateinit var chosenActivity: Activity
 
     lateinit var timeToDisplay: ZonedDateTime
     var titleId: Int = 0
