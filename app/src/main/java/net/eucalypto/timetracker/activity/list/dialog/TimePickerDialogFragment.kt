@@ -5,11 +5,16 @@ import android.app.TimePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import net.eucalypto.timetracker.activity.list.ActivityListViewModel
+import net.eucalypto.timetracker.activity.list.ActivityListViewModelFactory
+import net.eucalypto.timetracker.data.getRepository
 
 
 class TimePickerDialogFragment : DialogFragment() {
 
-    val viewModel: DialogViewModel by activityViewModels()
+    val viewModel: ActivityListViewModel by activityViewModels() {
+        ActivityListViewModelFactory(getRepository(requireContext()))
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val hour = viewModel.timeToDisplay.hour

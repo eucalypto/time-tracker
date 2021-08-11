@@ -10,13 +10,11 @@ import android.widget.TimePicker
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import net.eucalypto.timetracker.R
 import net.eucalypto.timetracker.activity.list.dialog.DeleteActivityConfirmationDialogFragment
-import net.eucalypto.timetracker.activity.list.dialog.DialogViewModel
 import net.eucalypto.timetracker.activity.list.dialog.TimePickerDialogFragment
 import net.eucalypto.timetracker.data.getRepository
 import net.eucalypto.timetracker.databinding.ActivityListFragmentBinding
@@ -26,11 +24,9 @@ import net.eucalypto.timetracker.domain.model.ActivityTimeLineException
 
 class ActivityListFragment : Fragment() {
 
-    private val viewModel: ActivityListViewModel by viewModels {
+    private val viewModel: ActivityListViewModel by activityViewModels {
         ActivityListViewModelFactory(getRepository(requireContext()))
     }
-
-    private val dialogViewModel: DialogViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,7 +62,7 @@ class ActivityListFragment : Fragment() {
     }
 
     private fun showDeleteConfirmationDialog(activity: Activity) {
-        dialogViewModel.onDeleteConfirmation = DialogInterface.OnClickListener { _, _ ->
+        viewModel.onDeleteConfirmation = DialogInterface.OnClickListener { _, _ ->
             viewModel.delete(activity)
         }
         DeleteActivityConfirmationDialogFragment().show(
@@ -76,7 +72,7 @@ class ActivityListFragment : Fragment() {
     }
 
     private fun showStartTimeChooserDialog(activity: Activity) {
-        dialogViewModel.apply {
+        viewModel.apply {
             timeToDisplay = activity.startTime
             titleId = R.string.activity_edit_dialog_start_time_title
             onTimeSet =
@@ -91,7 +87,7 @@ class ActivityListFragment : Fragment() {
     }
 
     private fun showEndTimeChooserDialog(activity: Activity) {
-        dialogViewModel.apply {
+        viewModel.apply {
             timeToDisplay = activity.endTime
             titleId = R.string.activity_edit_dialog_end_time_title
             onTimeSet = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
