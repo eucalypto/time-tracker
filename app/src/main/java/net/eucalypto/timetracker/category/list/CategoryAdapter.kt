@@ -5,64 +5,73 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.BindingAdapter
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import net.eucalypto.timetracker.R
 import net.eucalypto.timetracker.databinding.CategoryListItemBinding
 import net.eucalypto.timetracker.domain.model.Category
+import net.eucalypto.timetracker.domain.model.util.asParcel
 
-class CategoryAdapter(private val callbacks: CategoryPopupMenuCallbacks) :
+class CategoryAdapter(
+    private val sharedViewModel: CategoryListViewModel
+) :
     ListAdapter<Category, CategoryViewHolder>(CategoryDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        return CategoryViewHolder.from(parent)
+        return CategoryViewHolder.from(parent, sharedViewModel)
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         val listItem = getItem(position)
-        holder.bind(listItem, callbacks)
+        holder.bind(listItem)
     }
 }
 
 
 class CategoryViewHolder
-private constructor(private val binding: CategoryListItemBinding) :
+private constructor(
+    private val binding: CategoryListItemBinding,
+    private val sharedViewModel: CategoryListViewModel
+) :
     RecyclerView.ViewHolder(binding.root) {
 
-    lateinit var category: Category
+    private lateinit var category: Category
 
-    fun bind(category: Category, callbacks: CategoryPopupMenuCallbacks) {
+    fun bind(category: Category) {
         this.category = category
         binding.category = category
         binding.contextMenuButton.setOnClickListener {
-            showContextMenu(
-                it,
-                callbacks
-            )
+            showContextMenu(it)
         }
         binding.root.setOnLongClickListener {
-            showContextMenu(
-                binding.contextMenuButton,
-                callbacks
-            )
+            showContextMenu(binding.contextMenuButton)
             true
         }
     }
 
-    private fun showContextMenu(it: View, callbacks: CategoryPopupMenuCallbacks) {
-        val menu = PopupMenu(it.context, it)
+    private fun showContextMenu(view: View) {
+        val menu = PopupMenu(view.context, view)
         menu.inflate(R.menu.category_list_item_popup_menu)
         menu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_item_edit -> {
-                    callbacks.onEditClicked(category)
+                    sharedViewModel.categoryToUpdate = category
+                    val toEditCategory =
+                        CategoryListFragmentDirections.actionToEditCategoryDialogFragment()
+                    binding.root.findNavController().navigate(toEditCategory)
                 }
                 R.id.menu_item_delete -> {
-                    callbacks.onDeleteClicked(category)
+                    sharedViewModel.categoryToDelete = category
+                    val toDeleteConfirmationDialog =
+                        CategoryListFragmentDirections.actionToDeleteCategoryConfirmationDialogFragment()
+                    binding.root.findNavController().navigate(toDeleteConfirmationDialog)
                 }
                 R.id.menu_item_write_nfc -> {
-                    callbacks.onWriteNfcClicked(category)
+                    val toWriteNfc =
+                        CategoryListFragmentDirections.actionToWriteNfcActivity(category.asParcel())
+                    binding.root.findNavController().navigate(toWriteNfc)
                 }
             }
             true
@@ -71,10 +80,10 @@ private constructor(private val binding: CategoryListItemBinding) :
     }
 
     companion object {
-        fun from(parent: ViewGroup): CategoryViewHolder {
+        fun from(parent: ViewGroup, viewModel: CategoryListViewModel): CategoryViewHolder {
             val binding =
                 CategoryListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return CategoryViewHolder(binding)
+            return CategoryViewHolder(binding, viewModel)
         }
     }
 }
@@ -89,12 +98,6 @@ class CategoryDiffCallback : ItemCallback<Category>() {
         return oldItem == newItem
     }
 }
-
-class CategoryPopupMenuCallbacks(
-    val onWriteNfcClicked: (Category) -> Unit,
-    val onEditClicked: (Category) -> Unit,
-    val onDeleteClicked: (Category) -> Unit
-)
 
 
 @BindingAdapter("categoryList")

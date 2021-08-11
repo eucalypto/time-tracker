@@ -55,11 +55,11 @@
         tools:layout="@layout/about_fragment" />
     <dialog
         android:id="@+id/editCategoryDialogFragment"
-        android:name="net.eucalypto.timetracker.category.list.EditCategoryDialogFragment"
+        android:name="net.eucalypto.timetracker.category.list.dialogs.EditCategoryDialogFragment"
         android:label="EditCategoryDialogFragment"
         tools:layout="@layout/category_edit_name_dialog" />
     <dialog
         android:id="@+id/deleteCategoryConfirmationDialogFragment"
-        android:name="net.eucalypto.timetracker.category.list.DeleteCategoryConfirmationDialogFragment"
+        android:name="net.eucalypto.timetracker.category.list.dialogs.DeleteCategoryConfirmationDialogFragment"
         android:label="DeleteCategoryConfirmationDialogFragment" />
 </navigation>
