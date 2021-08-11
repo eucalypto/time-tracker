@@ -31,4 +31,10 @@ class TimePickerDialogFragment : DialogFragment() {
             setTitle(viewModel.titleId)
         }
     }
+
+
+    companion object {
+        const val TAG_END_TIME = "endTimePicker"
+        const val TAG_START_TIME = "startTimePicker"
+    }
 }

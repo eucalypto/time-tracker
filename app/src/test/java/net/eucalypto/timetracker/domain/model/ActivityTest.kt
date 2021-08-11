@@ -80,7 +80,7 @@ internal class ActivityTest {
         val now = ZonedDateTime.now()
         val validActivity = Activity(Category("ignore"), now)
 
-        assertThrows<ActivityTimeLineException> {
+        assertThrows<Activity.StartTimeBeforeEndTimeException> {
             validActivity.withEndTime(now.minusSeconds(1))
         }
     }
@@ -108,11 +108,11 @@ internal class ActivityTest {
             val now = ZonedDateTime.now()
             val inOneHour = now.plusHours(1)
 
-            assertThrows<ActivityFutureTimeException> {
+            assertThrows<Activity.FutureTimeException> {
                 Activity(Category("ignore"), now, inOneHour)
             }
 
-            assertThrows<ActivityFutureTimeException> {
+            assertThrows<Activity.FutureTimeException> {
                 Activity(Category("ignore"), inOneHour)
             }
         }
@@ -121,7 +121,7 @@ internal class ActivityTest {
         fun `throws ActivityTimeLineException for end Time one Second before startTime`() {
             val now = ZonedDateTime.now()
 
-            assertThrows<ActivityTimeLineException> {
+            assertThrows<Activity.StartTimeBeforeEndTimeException> {
                 Activity(Category("ignore"), now, now.minusSeconds(1))
             }
         }

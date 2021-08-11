@@ -18,8 +18,6 @@ import net.eucalypto.timetracker.activity.list.dialog.TimePickerDialogFragment
 import net.eucalypto.timetracker.data.getRepository
 import net.eucalypto.timetracker.databinding.ActivityListFragmentBinding
 import net.eucalypto.timetracker.domain.model.Activity
-import net.eucalypto.timetracker.domain.model.ActivityFutureTimeException
-import net.eucalypto.timetracker.domain.model.ActivityTimeLineException
 import java.time.ZonedDateTime
 
 class ActivityListFragment : Fragment() {
@@ -48,6 +46,10 @@ class ActivityListFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         setup(binding.activityList)
+
+        viewModel.editTimeError.observe(viewLifecycleOwner) { editTimeError ->
+            showErrorSnackbar(editTimeError)
+        }
     }
 
     private fun setup(activityList: RecyclerView) {
@@ -61,63 +63,19 @@ class ActivityListFragment : Fragment() {
         activityList.layoutManager = LinearLayoutManager(context)
     }
 
-    private fun showDeleteConfirmationDialog(activity: Activity) {
-        viewModel.chosenActivity = activity
-        DeleteActivityConfirmationDialogFragment().show(
-            childFragmentManager,
-            DeleteActivityConfirmationDialogFragment.TAG
-        )
-    }
-
-    private fun showStartTimeChooserDialog(activity: Activity) {
-        viewModel.apply {
-            timeToDisplay = activity.startTime
-            titleId = R.string.activity_edit_dialog_start_time_title
-            onTimeSet =
-                TimePickerDialog.OnTimeSetListener { _: TimePicker?, hourOfDay: Int, minute: Int ->
-                    val startTime =
-                        activity.startTime.withHour(hourOfDay).withMinute(minute).withSecond(0)
-                    tryUpdateActivity { activity.withStartTime(startTime) }
-                }
-        }
-
-        TimePickerDialogFragment().show(parentFragmentManager, "startTimePicker")
-    }
-
-    private fun showEndTimeChooserDialog(activity: Activity) {
-        viewModel.apply {
-            timeToDisplay = if (activity.isFinished()) activity.endTime else ZonedDateTime.now()
-            titleId = R.string.activity_edit_dialog_end_time_title
-            onTimeSet = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                val newEndTime = when {
-                    activity.isFinished() -> activity.endTime
-                    else -> ZonedDateTime.now()
-                }.withHour(hourOfDay).withMinute(minute).withSecond(0)
-
-                tryUpdateActivity { activity.withEndTime(newEndTime) }
+    private fun showErrorSnackbar(editTimeError: EditTimeError?) {
+        when (editTimeError) {
+            EditTimeError.FUTURE_TIME -> {
+                showSnackbarWithText(R.string.activity_edit_dialog_start_or_end_time_in_the_future)
+            }
+            EditTimeError.START_AFTER_END -> {
+                showSnackbarWithText(R.string.activity_edit_dialog_end_time_before_start_time)
+            }
+            else -> {
+                return
             }
         }
-
-        TimePickerDialogFragment().show(parentFragmentManager, "endTimePicker")
-    }
-
-    private fun tryUpdateActivity(getActivity: () -> Activity) {
-        try {
-            val updatedActivity = getActivity()
-            viewModel.update(updatedActivity)
-        } catch (_: ActivityTimeLineException) {
-            showTimeLineExceptionSnackbar()
-        } catch (_: ActivityFutureTimeException) {
-            showFutureTimeExceptionSnackbar()
-        }
-    }
-
-    private fun showFutureTimeExceptionSnackbar() {
-        showSnackbarWithText(R.string.activity_edit_dialog_start_or_end_time_in_the_future)
-    }
-
-    private fun showTimeLineExceptionSnackbar() {
-        showSnackbarWithText(R.string.activity_edit_dialog_end_time_before_start_time)
+        viewModel.resetEditTimeError()
     }
 
     private fun showSnackbarWithText(resId: Int) {
@@ -129,5 +87,44 @@ class ActivityListFragment : Fragment() {
             )
             .setAction(R.string.ok_button) {}
             .show()
+    }
+
+    private fun showDeleteConfirmationDialog(activity: Activity) {
+        viewModel.chosenActivity = activity
+        DeleteActivityConfirmationDialogFragment().show(
+            childFragmentManager,
+            DeleteActivityConfirmationDialogFragment.TAG
+        )
+    }
+
+    private fun showStartTimeChooserDialog(activity: Activity) {
+        viewModel.apply {
+            chosenActivity = activity
+            timeToDisplay = activity.startTime
+            titleId = R.string.activity_edit_dialog_start_time_title
+            onTimeSet =
+                TimePickerDialog.OnTimeSetListener { _: TimePicker?, hourOfDay: Int, minute: Int ->
+                    viewModel.setNewStartTime(hourOfDay, minute)
+                }
+        }
+        TimePickerDialogFragment().show(
+            parentFragmentManager,
+            TimePickerDialogFragment.TAG_START_TIME
+        )
+    }
+
+    private fun showEndTimeChooserDialog(activity: Activity) {
+        viewModel.apply {
+            chosenActivity = activity
+            timeToDisplay = if (activity.isFinished()) activity.endTime else ZonedDateTime.now()
+            titleId = R.string.activity_edit_dialog_end_time_title
+            onTimeSet = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+                viewModel.setNewEndTime(hourOfDay, minute)
+            }
+        }
+        TimePickerDialogFragment().show(
+            parentFragmentManager,
+            TimePickerDialogFragment.TAG_END_TIME
+        )
     }
 }
