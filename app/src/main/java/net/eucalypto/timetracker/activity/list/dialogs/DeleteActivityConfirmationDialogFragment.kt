@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.activity.list.dialog
+package net.eucalypto.timetracker.activity.list.dialogs
 
 import android.app.Dialog
 import android.os.Bundle
@@ -25,9 +25,5 @@ class DeleteActivityConfirmationDialogFragment : DialogFragment() {
             }
             .setNegativeButton(R.string.dialog_delete_button_cancel) { _, _ -> }
             .create()
-    }
-
-    companion object {
-        const val TAG = "DeleteActivityConfirmationDialogFragment"
     }
 }

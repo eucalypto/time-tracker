@@ -27,11 +27,26 @@ class ActivityListViewModel(private val repository: Repository) : ViewModel() {
         repository.delete(activity)
     }
 
-    private fun update(activity: Activity) = viewModelScope.launch {
-        repository.update(activity)
+    fun setChosenActivityForStartTime(activity: Activity) {
+        chosenActivity = activity
+        timeToDisplay = activity.startTime
+        startOrEndTime = StartOrEndTime.START
     }
 
-    fun setNewEndTime(hourOfDay: Int, minute: Int) {
+    fun setChosenActivityForEndTime(activity: Activity) {
+        chosenActivity = activity
+        timeToDisplay = if (activity.isFinished) activity.endTime else ZonedDateTime.now()
+        startOrEndTime = StartOrEndTime.END
+    }
+
+    fun updateChosenActivityTime(hourOfDay: Int, minute: Int) {
+        when (startOrEndTime) {
+            StartOrEndTime.START -> updateStartTime(hourOfDay, minute)
+            StartOrEndTime.END -> updateEndTime(hourOfDay, minute)
+        }
+    }
+
+    private fun updateEndTime(hourOfDay: Int, minute: Int) {
         val newEndTime = when {
             chosenActivity.isFinished -> chosenActivity.endTime
             else -> ZonedDateTime.now()
@@ -42,7 +57,7 @@ class ActivityListViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    fun setNewStartTime(hourOfDay: Int, minute: Int) {
+    private fun updateStartTime(hourOfDay: Int, minute: Int) {
         val startTime =
             chosenActivity.startTime.withHour(hourOfDay).withMinute(minute).withSecond(0)
         tryUpdateTime {
@@ -60,21 +75,15 @@ class ActivityListViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
+    private fun update(activity: Activity) = viewModelScope.launch {
+        repository.update(activity)
+    }
+
     fun resetEditTimeError() {
         _editTimeError.value = EditTimeError.NO_ERROR
     }
 
-    fun setChosenActivityForStartTime(activity: Activity) {
-        chosenActivity = activity
-        timeToDisplay = activity.startTime
-        startOrEndTime = StartOrEndTime.START
-    }
 
-    fun setChosenActivityForEndTime(activity: Activity) {
-        chosenActivity = activity
-        timeToDisplay = if (activity.isFinished) activity.endTime else ZonedDateTime.now()
-        startOrEndTime = StartOrEndTime.END
-    }
 }
 
 enum class EditTimeError {

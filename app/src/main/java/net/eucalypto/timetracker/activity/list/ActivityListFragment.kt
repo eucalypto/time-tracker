@@ -11,11 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import net.eucalypto.timetracker.R
-import net.eucalypto.timetracker.activity.list.dialog.DeleteActivityConfirmationDialogFragment
-import net.eucalypto.timetracker.activity.list.dialog.TimePickerDialogFragment
 import net.eucalypto.timetracker.data.getRepository
 import net.eucalypto.timetracker.databinding.ActivityListFragmentBinding
-import net.eucalypto.timetracker.domain.model.Activity
 
 class ActivityListFragment : Fragment() {
 
@@ -50,28 +47,24 @@ class ActivityListFragment : Fragment() {
     }
 
     private fun setupRecyclerView(activityList: RecyclerView) {
-        activityList.adapter = ActivityAdapter(
-            ActivityPopupMenuCallbacks(
-                onDeleteClicked = ::showDeleteConfirmationDialog,
-                onEditEndTimeClicked = ::showEndTimeChooserDialog,
-                onEditStartTimeClicked = ::showStartTimeChooserDialog
-            )
-        )
+        activityList.adapter = ActivityAdapter(viewModel)
         activityList.layoutManager = LinearLayoutManager(context)
     }
 
     private fun showErrorSnackbar(editTimeError: EditTimeError?) {
-        when (editTimeError) {
-            EditTimeError.FUTURE_TIME -> {
-                showSnackbarWithText(R.string.activity_edit_dialog_start_or_end_time_in_the_future)
+        showSnackbarWithText(
+            when (editTimeError) {
+                EditTimeError.FUTURE_TIME -> {
+                    R.string.activity_edit_dialog_start_or_end_time_in_the_future
+                }
+                EditTimeError.START_AFTER_END -> {
+                    R.string.activity_edit_dialog_end_time_before_start_time
+                }
+                else -> {
+                    return
+                }
             }
-            EditTimeError.START_AFTER_END -> {
-                showSnackbarWithText(R.string.activity_edit_dialog_end_time_before_start_time)
-            }
-            else -> {
-                return
-            }
-        }
+        )
         viewModel.resetEditTimeError()
     }
 
@@ -84,29 +77,5 @@ class ActivityListFragment : Fragment() {
             )
             .setAction(R.string.ok_button) {}
             .show()
-    }
-
-    private fun showDeleteConfirmationDialog(activity: Activity) {
-        viewModel.chosenActivity = activity
-        DeleteActivityConfirmationDialogFragment().show(
-            childFragmentManager,
-            DeleteActivityConfirmationDialogFragment.TAG
-        )
-    }
-
-    private fun showStartTimeChooserDialog(activity: Activity) {
-        viewModel.setChosenActivityForStartTime(activity)
-        TimePickerDialogFragment().show(
-            parentFragmentManager,
-            TimePickerDialogFragment.TAG_START_TIME
-        )
-    }
-
-    private fun showEndTimeChooserDialog(activity: Activity) {
-        viewModel.setChosenActivityForEndTime(activity)
-        TimePickerDialogFragment().show(
-            parentFragmentManager,
-            TimePickerDialogFragment.TAG_END_TIME
-        )
     }
 }

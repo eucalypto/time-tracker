@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.activity.list.dialog
+package net.eucalypto.timetracker.activity.list.dialogs
 
 import android.app.Dialog
 import android.app.TimePickerDialog
@@ -25,11 +25,11 @@ class TimePickerDialogFragment : DialogFragment() {
 
         return TimePickerDialog(
             activity,
-            { _, hourOfDay, minute ->
-                when (viewModel.startOrEndTime) {
-                    StartOrEndTime.START -> viewModel.setNewStartTime(hourOfDay, minute)
-                    StartOrEndTime.END -> viewModel.setNewEndTime(hourOfDay, minute)
-                }
+            { _, hourOfDay, minuteOfHour ->
+                viewModel.updateChosenActivityTime(
+                    hourOfDay,
+                    minuteOfHour
+                )
             },
             hour,
             minute,
@@ -42,11 +42,5 @@ class TimePickerDialogFragment : DialogFragment() {
                 }
             )
         }
-    }
-
-
-    companion object {
-        const val TAG_END_TIME = "endTimePicker"
-        const val TAG_START_TIME = "startTimePicker"
     }
 }

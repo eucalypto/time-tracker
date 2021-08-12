@@ -47,7 +47,14 @@
         android:id="@+id/activityListFragment"
         android:name="net.eucalypto.timetracker.activity.list.ActivityListFragment"
         android:label="@string/activity_list_fragment_title"
-        tools:layout="@layout/activity_list_fragment" />
+        tools:layout="@layout/activity_list_fragment">
+        <action
+            android:id="@+id/action_activityListFragment_to_deleteActivityConfirmationDialogFragment"
+            app:destination="@id/deleteActivityConfirmationDialogFragment" />
+        <action
+            android:id="@+id/action_activityListFragment_to_timePickerDialogFragment"
+            app:destination="@id/timePickerDialogFragment" />
+    </fragment>
     <fragment
         android:id="@+id/aboutFragment"
         android:name="net.eucalypto.timetracker.about.AboutFragment"
@@ -62,4 +69,12 @@
         android:id="@+id/deleteCategoryConfirmationDialogFragment"
         android:name="net.eucalypto.timetracker.category.list.dialogs.DeleteCategoryConfirmationDialogFragment"
         android:label="DeleteCategoryConfirmationDialogFragment" />
+    <dialog
+        android:id="@+id/deleteActivityConfirmationDialogFragment"
+        android:name="net.eucalypto.timetracker.activity.list.dialogs.DeleteActivityConfirmationDialogFragment"
+        android:label="DeleteActivityConfirmationDialogFragment" />
+    <dialog
+        android:id="@+id/timePickerDialogFragment"
+        android:name="net.eucalypto.timetracker.activity.list.dialogs.TimePickerDialogFragment"
+        android:label="TimePickerDialogFragment" />
 </navigation>
