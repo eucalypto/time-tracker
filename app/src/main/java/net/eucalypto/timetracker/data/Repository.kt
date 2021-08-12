@@ -21,7 +21,7 @@ class Repository(
     private val activityDao = database.activityDao
 
     fun getCategoriesAsLiveData(): LiveData<List<Category>> =
-        Transformations.map(categoryDao.categoriesAsLiveData()) {
+        categoryDao.categoriesAsLiveData().map {
             it.asDomainModel()
         }
 

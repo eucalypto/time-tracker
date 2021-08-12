@@ -16,9 +16,14 @@ class ReadNfcActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val wrongAction = intent.action != NfcAdapter.ACTION_NDEF_DISCOVERED
+        if (wrongAction) return
 
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED != intent.action) return
+        collectDataAndStartBackgroundWorker()
+        finish()
+    }
 
+    private fun collectDataAndStartBackgroundWorker() {
         val ndefMessages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)!!
         val message = ndefMessages.first() as NdefMessage
         val payload = message.records.first().payload
@@ -41,8 +46,5 @@ class ReadNfcActivity : Activity() {
             ExistingWorkPolicy.REPLACE,
             workRequest
         )
-
-
-        finish()
     }
 }
