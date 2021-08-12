@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.activity.list.dialogs
+package net.eucalypto.timetracker.ui.activity.list.dialogs
 
 import android.app.Dialog
 import android.os.Bundle
@@ -6,9 +6,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import net.eucalypto.timetracker.R
-import net.eucalypto.timetracker.activity.list.ActivityListViewModel
-import net.eucalypto.timetracker.activity.list.ActivityListViewModelFactory
 import net.eucalypto.timetracker.data.getRepository
+import net.eucalypto.timetracker.ui.activity.list.ActivityListViewModel
+import net.eucalypto.timetracker.ui.activity.list.ActivityListViewModelFactory
 
 class DeleteActivityConfirmationDialogFragment : DialogFragment() {
 

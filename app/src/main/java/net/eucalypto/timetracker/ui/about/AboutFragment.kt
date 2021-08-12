@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.about
+package net.eucalypto.timetracker.ui.about
 
 import android.os.Bundle
 import android.view.LayoutInflater

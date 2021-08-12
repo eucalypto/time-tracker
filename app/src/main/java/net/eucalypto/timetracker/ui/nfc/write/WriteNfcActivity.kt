@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.nfc.write
+package net.eucalypto.timetracker.ui.nfc.write
 
 import android.app.PendingIntent
 import android.content.Intent

@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker
+package net.eucalypto.timetracker.ui
 
 import android.os.Bundle
 import android.view.Menu
@@ -9,6 +9,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import net.eucalypto.timetracker.R
 import net.eucalypto.timetracker.databinding.MainActivityBinding
 
 

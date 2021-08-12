@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="net.eucalypto.timetracker.activity.list.ActivityListViewModel" />
+            type="net.eucalypto.timetracker.ui.activity.list.ActivityListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

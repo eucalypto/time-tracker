@@ -1,4 +1,4 @@
-package net.eucalypto.timetracker.activity.list
+package net.eucalypto.timetracker.ui.activity.list
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter

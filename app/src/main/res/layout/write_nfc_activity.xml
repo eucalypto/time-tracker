@@ -7,7 +7,7 @@
 
         <variable
             name="activity"
-            type="net.eucalypto.timetracker.nfc.write.WriteNfcActivity" />
+            type="net.eucalypto.timetracker.ui.nfc.write.WriteNfcActivity" />
 
         <variable
             name="category"

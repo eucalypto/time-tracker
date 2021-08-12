@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/categoryListFragment"
-        android:name="net.eucalypto.timetracker.category.list.CategoryListFragment"
+        android:name="net.eucalypto.timetracker.ui.category.list.CategoryListFragment"
         android:label="@string/categories"
         tools:layout="@layout/category_list_fragment">
         <action
@@ -26,7 +26,7 @@
 
     <activity
         android:id="@+id/writeNfcActivity"
-        android:name="net.eucalypto.timetracker.nfc.write.WriteNfcActivity"
+        android:name="net.eucalypto.timetracker.ui.nfc.write.WriteNfcActivity"
         android:label="WriteNfcActivity"
         tools:layout="@layout/write_nfc_activity">
         <argument
@@ -36,7 +36,7 @@
 
     <fragment
         android:id="@+id/createCategoryFragment"
-        android:name="net.eucalypto.timetracker.category.create.CreateCategoryFragment"
+        android:name="net.eucalypto.timetracker.ui.category.create.CreateCategoryFragment"
         android:label="EditCategoryFragment"
         tools:layout="@layout/create_category_fragment">
         <argument
@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/activityListFragment"
-        android:name="net.eucalypto.timetracker.activity.list.ActivityListFragment"
+        android:name="net.eucalypto.timetracker.ui.activity.list.ActivityListFragment"
         android:label="@string/activity_list_fragment_title"
         tools:layout="@layout/activity_list_fragment">
         <action
@@ -57,24 +57,24 @@
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="net.eucalypto.timetracker.about.AboutFragment"
+        android:name="net.eucalypto.timetracker.ui.about.AboutFragment"
         android:label="@string/about_fragment_navigation_title"
         tools:layout="@layout/about_fragment" />
     <dialog
         android:id="@+id/editCategoryDialogFragment"
-        android:name="net.eucalypto.timetracker.category.list.dialogs.EditCategoryDialogFragment"
+        android:name="net.eucalypto.timetracker.ui.category.list.dialogs.EditCategoryDialogFragment"
         android:label="EditCategoryDialogFragment"
         tools:layout="@layout/category_edit_name_dialog" />
     <dialog
         android:id="@+id/deleteCategoryConfirmationDialogFragment"
-        android:name="net.eucalypto.timetracker.category.list.dialogs.DeleteCategoryConfirmationDialogFragment"
+        android:name="net.eucalypto.timetracker.ui.category.list.dialogs.DeleteCategoryConfirmationDialogFragment"
         android:label="DeleteCategoryConfirmationDialogFragment" />
     <dialog
         android:id="@+id/deleteActivityConfirmationDialogFragment"
-        android:name="net.eucalypto.timetracker.activity.list.dialogs.DeleteActivityConfirmationDialogFragment"
+        android:name="net.eucalypto.timetracker.ui.activity.list.dialogs.DeleteActivityConfirmationDialogFragment"
         android:label="DeleteActivityConfirmationDialogFragment" />
     <dialog
         android:id="@+id/timePickerDialogFragment"
-        android:name="net.eucalypto.timetracker.activity.list.dialogs.TimePickerDialogFragment"
+        android:name="net.eucalypto.timetracker.ui.activity.list.dialogs.TimePickerDialogFragment"
         android:label="TimePickerDialogFragment" />
 </navigation>
