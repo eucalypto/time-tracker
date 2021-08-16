@@ -27,12 +27,12 @@ class ReadNfcActivity : Activity() {
         val ndefMessages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)!!
         val message = ndefMessages.first() as NdefMessage
         val payload = message.records.first().payload
-        val text = String(payload)
+        val categoryId = String(payload)
 
         val timestamp = ZonedDateTime.now().toString()
 
         val inputData = Data.Builder()
-            .putString(ReadNfcWorker.CATEGORY_ID_KEY, text)
+            .putString(ReadNfcWorker.CATEGORY_ID_KEY, categoryId)
             .putString(ReadNfcWorker.TIMESTAMP_STRING_KEY, timestamp)
             .build()
 

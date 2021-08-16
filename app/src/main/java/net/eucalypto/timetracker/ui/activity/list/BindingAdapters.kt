@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter
 
 
 fun ZonedDateTime.asCustomFormatString(): String {
-    val formatter = DateTimeFormatter.ofPattern("kk:mm") // e.g. 21:43
+    val formatter = DateTimeFormatter.ofPattern("HH:mm") // e.g. 21:43
     return this.format(formatter)
 }
 
