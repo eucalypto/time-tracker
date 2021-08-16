@@ -24,12 +24,9 @@ class ReadNfcActivity : Activity() {
     }
 
     private fun collectDataAndStartBackgroundWorker() {
-        val ndefMessages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)!!
-        val message = ndefMessages.first() as NdefMessage
-        val payload = message.records.first().payload
-        val categoryId = String(payload)
 
         val timestamp = ZonedDateTime.now().toString()
+        val categoryId = categoryIdFromIntent()
 
         val inputData = Data.Builder()
             .putString(ReadNfcWorker.CATEGORY_ID_KEY, categoryId)
@@ -47,4 +44,18 @@ class ReadNfcActivity : Activity() {
             workRequest
         )
     }
+
+    private fun categoryIdFromIntent(): String {
+        val ndefMessages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
+            ?: throw NdefError(
+                "intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES) returned Null. " +
+                        "This should never happen because EXTRA_NDEF_MESSAGES is mandatory for " +
+                        "ACTION_NDEF_DISCOVERED and must contain at least one message."
+            )
+        val message = ndefMessages.first() as NdefMessage
+        val payload = message.records.first().payload
+        return String(payload)
+    }
+
+    class NdefError(message: String) : Exception(message)
 }
